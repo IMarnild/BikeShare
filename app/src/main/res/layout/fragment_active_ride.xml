@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+             tools:context=".viewmodel.fragments.ActiveRideFragment">
+
+    <TextView
+            android:text="@string/label_active_ride"
+            android:textSize="25sp"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp" android:id="@+id/label_active_ride"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp">
+
+        <TextView
+                android:text="Ride information"
+                android:textSize="18sp"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="@string/label_bike_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/bike_name"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="@string/label_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/bike_location"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="@string/label_time_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/ride_time_start"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+            android:text="Stop riding?"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:layout_marginBottom="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="To end your ride, you have to type in your end-location in the field below and press the 'End ride' button"
+    />
+
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_location_end"
+    />
+
+    <EditText
+            android:id="@+id/ride_end_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorButton"
+            android:hint="Type your end-location here..."
+            android:layout_marginBottom="16dp"
+    />
+
+    <Button
+            android:id="@+id/btn_end_ride"
+            android:text="@string/btn_end_ride"
+            android:layout_width="match_parent"
+            style="?android:attr/buttonBarButtonStyle"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="wrap_content"/>
+</LinearLayout>
