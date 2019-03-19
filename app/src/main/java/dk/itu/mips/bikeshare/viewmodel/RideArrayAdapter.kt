@@ -2,7 +2,6 @@ package dk.itu.mips.bikeshare.viewmodel
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import dk.itu.mips.bikeshare.R
@@ -16,14 +15,15 @@ class RideArrayAdapter(private val myDataset: List<Any>, val listener: (Ride) ->
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just a string in this case that is shown in a TextView.
     class MyViewHolder(inflater: LayoutInflater, parent: ViewGroup)
-        : RecyclerView.ViewHolder(inflater.inflate(R.layout.adapter_array_ride, parent, false)) {
+        : RecyclerView.ViewHolder(inflater.inflate(R.layout.adapter_holder_ride, parent, false)) {
 
         var bike: TextView = itemView.findViewById(R.id.bike_name)
-        var location: TextView = itemView.findViewById(R.id.bike_location)
         var date: TextView = itemView.findViewById(R.id.ride_date)
 
         fun setOnClickListener(ride: Ride, listener: (Ride) -> Unit) {
             itemView.setOnClickListener {
+                this.itemView.setBackgroundColor(it.resources.getColor(R.color.colorPrimaryDark))
+                this.bike.setTextColor(it.resources.getColor(R.color.colorAccent))
                 listener(ride)
             }
         }
@@ -43,7 +43,6 @@ class RideArrayAdapter(private val myDataset: List<Any>, val listener: (Ride) ->
         val ride = myDataset[position] as Ride
 
         holder.bike.text = ride.bike?.name
-        holder.location.text = ride.location_end
         holder.date.text = ride.time_start
         holder.setOnClickListener(ride, this.listener)
     }

@@ -52,7 +52,7 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
     fun populateSpinner(view: View) {
         val realm = Realm.getInstance(Main.getRealmConfig())
         this.list = realm.where<Bike>().findAllAsync().toArray()
-
+        list.reverse()
 
         this.adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_dropdown_item, list)
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

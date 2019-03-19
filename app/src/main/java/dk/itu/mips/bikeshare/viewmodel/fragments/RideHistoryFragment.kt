@@ -47,7 +47,6 @@ class RideHistoryFragment : Fragment() {
     }
 
     private fun onListItemClicked(ride: Ride) {
-        println("clicked " + ride.bike?.name)
         val dialog = RideInfoDialog.newInstance(ride)
         dialog.show(fragmentManager, "Ride info")
     }
