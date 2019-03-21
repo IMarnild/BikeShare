@@ -64,8 +64,8 @@ class ActiveRideFragment : Fragment() {
     private fun setListeners() {
         this.endRide.setOnClickListener {
 
-            if (this.rideEndLocation.text.isBlank()) {
-                this.rideEndLocation.setHintTextColor(resources.getColor(R.color.error_color_material_light))
+            if (this.endLocationIsBlank()) {
+                this.noEndLocationWarning()
             } else {
                 this.endActiveRide()
                 Main.replaceFragment(MainFragment(), fragmentManager!!)
@@ -89,6 +89,14 @@ class ActiveRideFragment : Fragment() {
             // Update bike location
             ride.bike!!.location = this.rideEndLocation.text.toString()
         }
+    }
+
+    fun noEndLocationWarning() {
+        this.rideEndLocation.setHintTextColor(resources.getColor(R.color.error_color_material_light))
+    }
+
+    fun endLocationIsBlank(): Boolean {
+        return this.rideEndLocation.text.isBlank()
     }
 
     companion object {

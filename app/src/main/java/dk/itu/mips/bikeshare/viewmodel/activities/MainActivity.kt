@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.viewmodel.fragments.ActiveRideFragment
 import dk.itu.mips.bikeshare.viewmodel.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -23,5 +24,22 @@ class MainActivity : AppCompatActivity() {
                 )
                 .commit()
         }
+    }
+
+    override fun onBackPressed() {
+
+        var fragments = supportFragmentManager.fragments
+        var handled = false
+
+        fragments.map { f ->
+            if (f is ActiveRideFragment) {
+                var activeRide = f as ActiveRideFragment
+
+                handled = activeRide.endLocationIsBlank()
+                if (handled) activeRide.noEndLocationWarning()
+            }
+        }
+
+        if (!handled) super.onBackPressed()
     }
 }

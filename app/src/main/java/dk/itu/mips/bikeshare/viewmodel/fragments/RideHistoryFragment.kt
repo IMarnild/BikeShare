@@ -14,6 +14,7 @@ import dk.itu.mips.bikeshare.viewmodel.RideArrayAdapter
 import dk.itu.mips.bikeshare.viewmodel.RideInfoDialog
 import io.realm.Realm
 import io.realm.RealmResults
+import io.realm.Sort
 import io.realm.kotlin.where
 
 class RideHistoryFragment : Fragment() {
@@ -43,7 +44,7 @@ class RideHistoryFragment : Fragment() {
 
     private fun read(): RealmResults<Ride> {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        return realm.where<Ride>().findAll()
+        return realm.where<Ride>().sort("time_end", Sort.DESCENDING).findAll()
     }
 
     private fun onListItemClicked(ride: Ride) {

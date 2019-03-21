@@ -9,6 +9,7 @@ import android.widget.*
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.viewmodel.EditBikeDialog
 import dk.itu.mips.bikeshare.viewmodel.NewBikeDialog
 import io.realm.Realm
 import io.realm.kotlin.where
@@ -51,12 +52,15 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     fun populateSpinner(view: View) {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        this.list = realm.where<Bike>().findAllAsync().toArray()
-        list.reverse()
+        this.list = realm.where<Bike>().sort("id").findAllAsync().toArray()
 
         this.adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_dropdown_item, list)
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.bikeSpinner.adapter = adapter
+    }
+
+    fun selectBike(index: Int) {
+        this.bikeSpinner.setSelection(list.size-1)
     }
 
     private fun setListeners() {
@@ -68,6 +72,12 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val dialog = NewBikeDialog()
             dialog.setTargetFragment(this,1)
             dialog.show(fragmentManager,"New Bike")
+        }
+
+        this.editBike.setOnClickListener {
+            val dialog = EditBikeDialog()
+            dialog.bike = this.bike
+            dialog.show(fragmentManager, "Edit Bike")
         }
     }
 
