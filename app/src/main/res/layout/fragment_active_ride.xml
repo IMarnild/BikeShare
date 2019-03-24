@@ -107,7 +107,7 @@
             android:id="@+id/ride_end_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorButton"
+            android:background="@color/colorBackground"
             android:hint="@string/hint_end_ride"
             android:layout_marginBottom="16dp"
     />
@@ -117,6 +117,6 @@
             android:text="@string/btn_end_ride"
             android:layout_width="match_parent"
             style="?android:attr/buttonBarButtonStyle"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimaryLight"
             android:layout_height="wrap_content"/>
 </LinearLayout>

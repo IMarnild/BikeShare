@@ -1,4 +1,4 @@
-package dk.itu.mips.bikeshare.viewmodel
+package dk.itu.mips.bikeshare.viewmodel.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -51,7 +51,7 @@ class RideInfoDialog : DialogFragment() {
     }
 
     fun setVariables() {
-        this.bikeName.text = ride.bike?.name
+        this.bikeName.text = ride.bikeName
         this.startLocation.text = ride.location_start
         this.endLocation.text = ride.location_end
         this.startTime.text = ride.time_start

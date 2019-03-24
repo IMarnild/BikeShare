@@ -2,15 +2,12 @@ package dk.itu.mips.bikeshare.viewmodel.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
-import dk.itu.mips.bikeshare.model.Bike
-import dk.itu.mips.bikeshare.viewmodel.NewBikeDialog
 
 class MainFragment : Fragment() {
 

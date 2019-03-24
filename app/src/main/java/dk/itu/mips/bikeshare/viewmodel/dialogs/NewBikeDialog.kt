@@ -1,4 +1,4 @@
-package dk.itu.mips.bikeshare.viewmodel
+package dk.itu.mips.bikeshare.viewmodel.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog

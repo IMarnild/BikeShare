@@ -32,14 +32,14 @@
                 android:layout_height="wrap_content"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_marginBottom="10dp"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimaryLight"
                 android:id="@+id/btn_new_ride"/>
 
         <Button
                 android:text="@string/btn_history_ride"
                 android:layout_width="match_parent"
                 style="?android:attr/buttonBarButtonStyle"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimaryLight"
                 android:layout_height="wrap_content" android:id="@+id/btn_history_ride"/>
 
 

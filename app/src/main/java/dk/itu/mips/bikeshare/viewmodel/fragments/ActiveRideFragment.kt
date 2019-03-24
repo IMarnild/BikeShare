@@ -64,13 +64,11 @@ class ActiveRideFragment : Fragment() {
 
     private fun setListeners() {
         this.endRide.setOnClickListener {
-
             if (this.endLocationIsBlank()) {
                 this.noEndLocationWarning()
             } else {
                 this.endActiveRide()
                 Main.replaceFragment(MainFragment(), fragmentManager!!)
-
             }
         }
     }
@@ -84,6 +82,7 @@ class ActiveRideFragment : Fragment() {
             // Add a ride
             val ride = realm.createObject<Ride>(index+1)
             ride.bike = this.bike
+            ride.bikeName = this.bike!!.name
             ride.location_start = this.bike!!.location
             ride.location_end = this.rideEndLocation.text.toString()
             ride.time_start = this.time

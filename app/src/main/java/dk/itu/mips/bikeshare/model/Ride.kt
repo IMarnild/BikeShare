@@ -15,4 +15,5 @@ open class Ride () : RealmObject(), Serializable {
     var time_start: String? = null
     var time_end: String? = null
     var bike: Bike? = null
+    var bikeName: String? = null
 }

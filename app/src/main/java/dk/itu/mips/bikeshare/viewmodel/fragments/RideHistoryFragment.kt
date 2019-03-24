@@ -11,7 +11,7 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Ride
 import dk.itu.mips.bikeshare.viewmodel.RideArrayAdapter
-import dk.itu.mips.bikeshare.viewmodel.RideInfoDialog
+import dk.itu.mips.bikeshare.viewmodel.dialogs.RideInfoDialog
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort

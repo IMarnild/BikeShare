@@ -9,8 +9,8 @@ import android.widget.*
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.R
-import dk.itu.mips.bikeshare.viewmodel.EditBikeDialog
-import dk.itu.mips.bikeshare.viewmodel.NewBikeDialog
+import dk.itu.mips.bikeshare.viewmodel.dialogs.EditBikeDialog
+import dk.itu.mips.bikeshare.viewmodel.dialogs.NewBikeDialog
 import io.realm.Realm
 import io.realm.kotlin.where
 

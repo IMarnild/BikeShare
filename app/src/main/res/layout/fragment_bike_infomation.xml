@@ -85,6 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:attr/buttonBarButtonStyle"
-            android:background="@color/colorPrimaryDark" android:id="@+id/btn_start_ride"/>
+            android:background="@color/colorPrimaryLight" android:id="@+id/btn_start_ride"/>
 
 </LinearLayout>
