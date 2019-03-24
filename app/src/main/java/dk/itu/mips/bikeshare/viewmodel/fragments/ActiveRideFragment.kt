@@ -12,6 +12,7 @@ import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.Ride
 import io.realm.Realm
+import io.realm.Sort
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 
@@ -76,10 +77,12 @@ class ActiveRideFragment : Fragment() {
 
     private fun endActiveRide() {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        val index = realm.where<Ride>().findAll().toArray().size
+        val last =  realm.where<Ride>().sort("id", Sort.DESCENDING).findFirst()
+        val index = last?.id ?: 0
+
         realm.executeTransaction { realm ->
             // Add a ride
-            val ride = realm.createObject<Ride>(index)
+            val ride = realm.createObject<Ride>(index+1)
             ride.bike = this.bike
             ride.location_start = this.bike!!.location
             ride.location_end = this.rideEndLocation.text.toString()

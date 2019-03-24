@@ -2,16 +2,15 @@ package dk.itu.mips.bikeshare.viewmodel
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.view.View
 import android.widget.TextView
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.viewmodel.fragments.BikeInformationFragment
 import io.realm.Realm
+import io.realm.Sort
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 
@@ -36,7 +35,7 @@ class NewBikeDialog : DialogFragment() {
 
                 // TODO: Find a better way to refresh ArrayAdapter
                 val parent = targetFragment as BikeInformationFragment
-                parent.populateSpinner(parent.view!!)
+                parent.updateSpinner(parent.view!!)
             }
                 .setNegativeButton(R.string.cancel
                 ) { _, _ ->
@@ -48,10 +47,12 @@ class NewBikeDialog : DialogFragment() {
 
     private fun addBikeToRealm() {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        val index = realm.where<Bike>().findAllAsync().toArray().size
+        val bike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
+        val index = bike?.id ?: 0
+
         realm.executeTransaction { realm ->
             // Add a bike
-            val bike = realm.createObject<Bike>(index)
+            val bike = realm.createObject<Bike>(index+1)
             bike.name = bikeName.text.toString()
             bike.location = bikeLocation.text.toString()
         }

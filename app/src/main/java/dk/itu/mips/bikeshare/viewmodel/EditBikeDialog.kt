@@ -8,6 +8,7 @@ import android.widget.TextView
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
+import dk.itu.mips.bikeshare.viewmodel.fragments.BikeInformationFragment
 import io.realm.Realm
 import io.realm.kotlin.where
 
@@ -33,7 +34,8 @@ class EditBikeDialog : DialogFragment() {
 
             builder.setPositiveButton("Save") { _, _ -> this.updateBike() }
             builder.setNegativeButton("Delete") { _, _ ->
-                this.deleteBike()
+                val parent = targetFragment as BikeInformationFragment
+                parent.deleteBike(bike?.id!!)
             }
 
             builder.create()
@@ -48,14 +50,5 @@ class EditBikeDialog : DialogFragment() {
             realmBike!!.name = this.bikeName.text.toString()
             realmBike.location = this.bikeLocation.text.toString()
         }
-    }
-
-    private fun deleteBike() {
-        val realm = Realm.getInstance(Main.getRealmConfig())
-        realm.executeTransaction { _ ->
-            val bike = realm.where<Bike>().equalTo("id", this.bike?.id).findFirst()
-            bike!!.deleteFromRealm()
-        }
-
     }
 }

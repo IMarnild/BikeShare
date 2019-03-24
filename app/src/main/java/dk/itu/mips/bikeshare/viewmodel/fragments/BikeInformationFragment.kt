@@ -22,8 +22,9 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var bikeLocation: TextView
     private lateinit var bikeSpinner: Spinner
+    private var bikeIndex: Int = 0
     private lateinit var adapter: ArrayAdapter<Any>
-    private lateinit var list: Array<Any>
+    private lateinit var bikes: Array<Any>
     private lateinit var startRide: Button
     private lateinit var editBike: Button
     private lateinit var addBike: Button
@@ -35,7 +36,7 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.initVariables(view)
-        populateSpinner(view)
+        updateSpinner(view)
         this.setListeners()
         this.updateUI()
     }
@@ -50,17 +51,26 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
         this.bikeSpinner.onItemSelectedListener = this
     }
 
-    fun populateSpinner(view: View) {
+    fun updateSpinner(view: View) {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        this.list = realm.where<Bike>().sort("id").findAllAsync().toArray()
+        this.bikes = realm.where<Bike>().sort("id").findAll().toArray()
 
-        this.adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_dropdown_item, list)
+        this.adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_dropdown_item, bikes)
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.bikeSpinner.adapter = adapter
     }
 
-    fun selectBike(index: Int) {
-        this.bikeSpinner.setSelection(list.size-1)
+    fun deleteBike(id: Long) {
+        this.adapter.remove(this.bikeIndex)
+        this.bikeSpinner.adapter = this.adapter
+
+        val realm = Realm.getInstance(Main.getRealmConfig())
+        realm.executeTransaction {
+            val bike = realm.where<Bike>().equalTo("id", id).findFirst()
+            bike!!.deleteFromRealm()
+        }
+
+        this.updateSpinner(this.view!!)
     }
 
     private fun setListeners() {
@@ -76,6 +86,7 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         this.editBike.setOnClickListener {
             val dialog = EditBikeDialog()
+            dialog.setTargetFragment(this,1)
             dialog.bike = this.bike
             dialog.show(fragmentManager, "Edit Bike")
         }
@@ -87,12 +98,13 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        this.bike = list[0] as Bike
+        this.bike = bikes[0] as Bike
         this.updateUI()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        this.bike = list[position] as Bike
+        this.bike = bikes[position] as Bike
+        this.bikeIndex = position
         this.updateUI()
     }
 }

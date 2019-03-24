@@ -3,6 +3,7 @@ package dk.itu.mips.bikeshare
 import android.app.Application
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import dk.itu.mips.bikeshare.viewmodel.fragments.BikeInformationFragment
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.text.SimpleDateFormat
@@ -32,6 +33,14 @@ class Main : Application() {
             val date = Calendar.getInstance().time
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.GERMAN)
             return simpleDateFormat.format(date)
+        }
+
+        fun refresh(fragmentManager: FragmentManager) {
+            val current = fragmentManager.findFragmentById(R.id.fragment_container) as BikeInformationFragment
+            fragmentManager.beginTransaction()
+                .detach(current)
+                .attach(current)
+                .commit()
         }
     }
 }
