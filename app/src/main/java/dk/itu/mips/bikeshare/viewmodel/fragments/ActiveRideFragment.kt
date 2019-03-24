@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -52,6 +53,9 @@ class ActiveRideFragment : Fragment() {
         this.bikeName.text = this.bike?.name
         this.bikeLocation.text = this.bike?.location
         this.rideTimeStart.text = this.time
+
+        Toast.makeText(this.context!!, "Ride started!", Toast.LENGTH_LONG)
+            .show()
     }
 
     private fun initVariables(view: View) {
@@ -91,6 +95,9 @@ class ActiveRideFragment : Fragment() {
             // Update bike location
             ride.bike!!.location = this.rideEndLocation.text.toString()
         }
+
+        Toast.makeText(this.context!!, "Ride ended!", Toast.LENGTH_LONG)
+            .show()
     }
 
     fun noEndLocationWarning() {

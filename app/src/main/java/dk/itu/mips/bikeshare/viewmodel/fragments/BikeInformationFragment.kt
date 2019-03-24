@@ -12,6 +12,8 @@ import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.viewmodel.dialogs.EditBikeDialog
 import dk.itu.mips.bikeshare.viewmodel.dialogs.NewBikeDialog
 import io.realm.Realm
+import io.realm.Sort
+import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 
 
@@ -51,13 +53,30 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
         this.bikeSpinner.onItemSelectedListener = this
     }
 
-    fun updateSpinner(view: View) {
+    private fun updateSpinner(view: View) {
         val realm = Realm.getInstance(Main.getRealmConfig())
         this.bikes = realm.where<Bike>().sort("id").findAll().toArray()
 
         this.adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_dropdown_item, bikes)
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.bikeSpinner.adapter = adapter
+    }
+
+    fun addBike(name: String, location: String) {
+        val realm = Realm.getInstance(Main.getRealmConfig())
+        val bike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
+        val index = bike?.id ?: 0
+
+        realm.executeTransaction { realm ->
+            val newBike = realm.createObject<Bike>(index+1)
+            newBike.name = name
+            newBike.location = location
+        }
+
+        this.updateSpinner(this.view!!)
+
+        Toast.makeText(this.context!!, "Bike Added!", Toast.LENGTH_LONG)
+            .show()
     }
 
     fun deleteBike(id: Long) {
@@ -71,6 +90,9 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         this.updateSpinner(this.view!!)
+
+        Toast.makeText(this.context!!, "Bike Deleted!", Toast.LENGTH_LONG)
+            .show()
     }
 
     private fun setListeners() {
@@ -92,9 +114,10 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun updateUI() {
+    fun updateUI() {
         this.bikeName.text = this.bike?.name
         this.bikeLocation.text = this.bike?.location
+        this.adapter.notifyDataSetChanged()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

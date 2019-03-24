@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.TextView
+import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -50,5 +51,11 @@ class EditBikeDialog : DialogFragment() {
             realmBike!!.name = this.bikeName.text.toString()
             realmBike.location = this.bikeLocation.text.toString()
         }
+
+        Toast.makeText(targetFragment!!.context, "Bike updated!", Toast.LENGTH_LONG)
+            .show()
+
+        val parent = targetFragment as BikeInformationFragment
+        parent.updateUI()
     }
 }

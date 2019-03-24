@@ -31,16 +31,8 @@ class Main : Application() {
 
         fun getDate(): String {
             val date = Calendar.getInstance().time
-            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.GERMAN)
+            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN)
             return simpleDateFormat.format(date)
-        }
-
-        fun refresh(fragmentManager: FragmentManager) {
-            val current = fragmentManager.findFragmentById(R.id.fragment_container) as BikeInformationFragment
-            fragmentManager.beginTransaction()
-                .detach(current)
-                .attach(current)
-                .commit()
         }
     }
 }

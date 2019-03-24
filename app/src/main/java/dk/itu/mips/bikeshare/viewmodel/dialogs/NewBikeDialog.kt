@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.TextView
+import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -31,30 +32,18 @@ class NewBikeDialog : DialogFragment() {
             this.bikeLocation = layout.findViewById(R.id.bike_location)
 
             builder.setPositiveButton(R.string.add
-            ) { _, _ -> this.addBikeToRealm()
-
-                // TODO: Find a better way to refresh ArrayAdapter
-                val parent = targetFragment as BikeInformationFragment
-                parent.updateSpinner(parent.view!!)
-            }
-                .setNegativeButton(R.string.cancel
-                ) { _, _ ->
-                    dialog.cancel()
+            ) { _, _ ->
+                if (bikeName.text.isNotBlank() && bikeLocation.text.isNotBlank()) {
+                    val parent = targetFragment as BikeInformationFragment
+                    parent.addBike(this.bikeName.text.toString(), this.bikeLocation.text.toString())
                 }
+            }
+
+            builder.setNegativeButton(R.string.cancel
+            ) { _, _ ->
+                dialog.cancel()
+            }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
-    private fun addBikeToRealm() {
-        val realm = Realm.getInstance(Main.getRealmConfig())
-        val bike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
-        val index = bike?.id ?: 0
-
-        realm.executeTransaction { realm ->
-            // Add a bike
-            val bike = realm.createObject<Bike>(index+1)
-            bike.name = bikeName.text.toString()
-            bike.location = bikeLocation.text.toString()
-        }
     }
 }
