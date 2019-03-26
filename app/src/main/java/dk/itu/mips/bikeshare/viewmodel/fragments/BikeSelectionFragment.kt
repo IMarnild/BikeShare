@@ -1,7 +1,9 @@
 package dk.itu.mips.bikeshare.viewmodel.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.FileProvider
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -128,5 +130,14 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         this.bike = bikes[position] as Bike
         this.bikeIndex = position
         this.updateUI()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 2) {
+            val uri = FileProvider.getUriForFile(activity!!, "com.bignerdranch.android.criminalintent.fileprovider", bikeInfo.photoFile)
+            activity!!.revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            bikeInfo.updatePhotoView()
+        }
     }
 }

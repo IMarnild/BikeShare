@@ -5,7 +5,9 @@ import android.content.pm.PackageManager
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
+import dk.itu.mips.bikeshare.PictureUtils
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.viewmodel.fragments.BikeSelectionFragment
@@ -18,6 +20,7 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
     private val bikeLocation: TextView = this.view.findViewById(R.id.bike_location)
     private val bikeAvailable: TextView = this.view.findViewById(R.id.bike_available)
     private val cameraButton: ImageButton = this.view.findViewById(R.id.btn_camera)
+    private val photoView: ImageView = this.view.findViewById(R.id.bike_photo)
 
     lateinit var photoFile: File
 
@@ -27,6 +30,7 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
         this.bikeAvailable.text = bike.available.toString()
         this.photoFile = getPhotoFile(bike)
         this.camera()
+        updatePhotoView()
     }
 
     fun camera() {
@@ -46,6 +50,15 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
             cameraActivities.forEach { a -> context.grantUriPermission(a.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION) }
 
             parent.startActivityForResult(captureImage, 2)
+        }
+    }
+
+    fun updatePhotoView() {
+        if (this.photoFile == null || !photoFile.exists()) {
+            this.photoView.setImageDrawable(null)
+        } else {
+            val bitmap = PictureUtils.getScaledBitmap( this.photoFile.path, this.parent.activity!!)
+            this.photoView.setImageBitmap(bitmap)
         }
     }
 
