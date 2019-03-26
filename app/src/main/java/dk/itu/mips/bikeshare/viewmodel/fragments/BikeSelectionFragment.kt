@@ -62,7 +62,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         this.bikeSpinner.adapter = adapter
     }
 
-    fun addBike(name: String, location: String) {
+    fun addBike(name: String, location: String, price: String) {
         val realm = Realm.getInstance(Main.getRealmConfig())
         val bike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
         val index = bike?.id ?: 0
@@ -71,6 +71,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val newBike = realm.createObject<Bike>(index+1)
             newBike.name = name
             newBike.location = location
+            newBike.price = price
         }
 
         this.updateSpinner(this.view!!)

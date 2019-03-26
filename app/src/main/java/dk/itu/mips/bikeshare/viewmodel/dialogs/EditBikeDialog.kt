@@ -17,6 +17,7 @@ class EditBikeDialog : DialogFragment() {
 
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
+    private lateinit var bikePrice: TextView
     var bike: Bike? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -32,6 +33,9 @@ class EditBikeDialog : DialogFragment() {
 
             this.bikeLocation = layout.findViewById(R.id.bike_location)
             this.bikeLocation.text = this.bike?.location
+
+            this.bikePrice = layout.findViewById(R.id.bike_price)
+            this.bikePrice.text = this.bike?.price.toString()
 
             builder.setPositiveButton("Save") { _, _ -> this.updateBike() }
             builder.setNegativeButton("Delete") { _, _ ->
@@ -50,6 +54,7 @@ class EditBikeDialog : DialogFragment() {
         realm.executeTransaction { _ ->
             realmBike!!.name = this.bikeName.text.toString()
             realmBike.location = this.bikeLocation.text.toString()
+            realmBike.price = this.bikePrice.text.toString()
         }
 
         Toast.makeText(targetFragment!!.context, "Bike updated!", Toast.LENGTH_LONG)

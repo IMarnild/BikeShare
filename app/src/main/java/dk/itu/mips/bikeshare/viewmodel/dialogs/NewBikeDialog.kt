@@ -17,7 +17,7 @@ class NewBikeDialog : DialogFragment() {
 
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
-    private lateinit var cameraButton: ImageButton
+    private lateinit var bikePrice: TextView
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -29,12 +29,13 @@ class NewBikeDialog : DialogFragment() {
 
             this.bikeName = layout.findViewById(R.id.bike_name)
             this.bikeLocation = layout.findViewById(R.id.bike_location)
+            this.bikePrice = layout.findViewById(R.id.bike_price)
 
             builder.setPositiveButton(R.string.add
             ) { _, _ ->
-                if (bikeName.text.isNotBlank() && bikeLocation.text.isNotBlank()) {
+                if (bikeName.text.isNotBlank() && bikeLocation.text.isNotBlank() && bikePrice.text.isNotBlank()) {
                     val parent = targetFragment as BikeSelectionFragment
-                    parent.addBike(this.bikeName.text.toString(), this.bikeLocation.text.toString())
+                    parent.addBike(this.bikeName.text.toString(), this.bikeLocation.text.toString(), this.bikePrice.text.toString())
                 }
             }
 
