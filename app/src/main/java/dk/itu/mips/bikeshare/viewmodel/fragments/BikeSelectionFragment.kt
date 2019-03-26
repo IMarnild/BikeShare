@@ -16,12 +16,14 @@ import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
+import java.io.File
 
 
 class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private var bike: Bike? = null
     private var bikeIndex: Int = 0
+
     private lateinit var bikeInfo: BikeInformation
     private lateinit var bikeSpinner: Spinner
     private lateinit var adapter: ArrayAdapter<Any>
@@ -43,7 +45,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun initVariables(view: View) {
-        this.bikeInfo = BikeInformation(view)
+        this.bikeInfo = BikeInformation(this)
         this.bikeSpinner = view.findViewById(R.id.spinner_bike)
         this.startRide = view.findViewById(R.id.btn_start_ride)
         this.editBike = view.findViewById(R.id.btn_edit_bike)

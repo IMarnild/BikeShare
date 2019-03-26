@@ -2,8 +2,13 @@ package dk.itu.mips.bikeshare.viewmodel.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.FileProvider
+import android.widget.ImageButton
 import android.widget.TextView
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.viewmodel.fragments.BikeSelectionFragment
@@ -12,6 +17,7 @@ class NewBikeDialog : DialogFragment() {
 
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
+    private lateinit var cameraButton: ImageButton
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {

@@ -13,6 +13,11 @@ open class Bike(
     var location: String? = null,
     var available: Boolean = true
 ) : RealmObject(), Serializable {
+
+    fun getPhotoFilename(): String {
+        return "IMG_" + this.id.toString() + ".jpg"
+    }
+
     override fun toString(): String {
         return "" + this.id + ": " + this.name
     }
