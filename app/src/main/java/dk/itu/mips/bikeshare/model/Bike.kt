@@ -10,7 +10,8 @@ open class Bike(
     @PrimaryKey
     var id: Long = 0,
     var name: String? = null,
-    var location: String? = null
+    var location: String? = null,
+    var available: Boolean = true
 ) : RealmObject(), Serializable {
     override fun toString(): String {
         return "" + this.id + ": " + this.name

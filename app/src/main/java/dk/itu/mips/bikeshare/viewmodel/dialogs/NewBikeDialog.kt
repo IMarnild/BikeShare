@@ -5,15 +5,8 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.TextView
-import android.widget.Toast
-import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
-import dk.itu.mips.bikeshare.model.Bike
-import dk.itu.mips.bikeshare.viewmodel.fragments.BikeInformationFragment
-import io.realm.Realm
-import io.realm.Sort
-import io.realm.kotlin.createObject
-import io.realm.kotlin.where
+import dk.itu.mips.bikeshare.viewmodel.fragments.BikeSelectionFragment
 
 class NewBikeDialog : DialogFragment() {
 
@@ -34,7 +27,7 @@ class NewBikeDialog : DialogFragment() {
             builder.setPositiveButton(R.string.add
             ) { _, _ ->
                 if (bikeName.text.isNotBlank() && bikeLocation.text.isNotBlank()) {
-                    val parent = targetFragment as BikeInformationFragment
+                    val parent = targetFragment as BikeSelectionFragment
                     parent.addBike(this.bikeName.text.toString(), this.bikeLocation.text.toString())
                 }
             }

@@ -9,6 +9,7 @@ import android.widget.*
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.viewmodel.BikeInformation
 import dk.itu.mips.bikeshare.viewmodel.dialogs.EditBikeDialog
 import dk.itu.mips.bikeshare.viewmodel.dialogs.NewBikeDialog
 import io.realm.Realm
@@ -17,14 +18,12 @@ import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 
 
-class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private var bike: Bike? = null
-    private lateinit var bikeName: TextView
-
-    private lateinit var bikeLocation: TextView
-    private lateinit var bikeSpinner: Spinner
     private var bikeIndex: Int = 0
+    private lateinit var bikeInfo: BikeInformation
+    private lateinit var bikeSpinner: Spinner
     private lateinit var adapter: ArrayAdapter<Any>
     private lateinit var bikes: Array<Any>
     private lateinit var startRide: Button
@@ -32,7 +31,7 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var addBike: Button
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
-        return inflater.inflate(R.layout.fragment_bike_infomation, container, false)
+        return inflater.inflate(R.layout.fragment_bike_selection, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,8 +43,7 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun initVariables(view: View) {
-        this.bikeName = view.findViewById(R.id.bike_name)
-        this.bikeLocation = view.findViewById(R.id.bike_location)
+        this.bikeInfo = BikeInformation(view)
         this.bikeSpinner = view.findViewById(R.id.spinner_bike)
         this.startRide = view.findViewById(R.id.btn_start_ride)
         this.editBike = view.findViewById(R.id.btn_edit_bike)
@@ -115,8 +113,7 @@ class BikeInformationFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     fun updateUI() {
-        this.bikeName.text = this.bike?.name
-        this.bikeLocation.text = this.bike?.location
+        if (this.bike != null) this.bikeInfo.bind(this.bike!!)
         this.adapter.notifyDataSetChanged()
     }
 

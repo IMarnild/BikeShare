@@ -9,7 +9,7 @@ import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
-import dk.itu.mips.bikeshare.viewmodel.fragments.BikeInformationFragment
+import dk.itu.mips.bikeshare.viewmodel.fragments.BikeSelectionFragment
 import io.realm.Realm
 import io.realm.kotlin.where
 
@@ -35,7 +35,7 @@ class EditBikeDialog : DialogFragment() {
 
             builder.setPositiveButton("Save") { _, _ -> this.updateBike() }
             builder.setNegativeButton("Delete") { _, _ ->
-                val parent = targetFragment as BikeInformationFragment
+                val parent = targetFragment as BikeSelectionFragment
                 parent.deleteBike(bike?.id!!)
             }
 
@@ -55,7 +55,7 @@ class EditBikeDialog : DialogFragment() {
         Toast.makeText(targetFragment!!.context, "Bike updated!", Toast.LENGTH_LONG)
             .show()
 
-        val parent = targetFragment as BikeInformationFragment
+        val parent = targetFragment as BikeSelectionFragment
         parent.updateUI()
     }
 }

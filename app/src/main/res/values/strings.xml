@@ -11,6 +11,8 @@
     <string name="label_active_ride">!Currently Riding!</string>
     <string name="label_location_end">End location*</string>
     <string name="label_ride_information">Ride information</string>
+    <string name="label_available">Available: </string>
+
 
     <string name="btn_start_ride">Start Ride!</string>
     <string name="btn_end_ride">End Ride</string>
@@ -24,5 +26,10 @@
     <string name="hint_bike_name">Bike name</string>
     <string name="hint_bike_location">Bike location</string>
     <string name="hint_end_ride">"Type your end-location here…"</string>
-    <string name="description_end_ride">To end your ride, you have to type in your end-location in the field below and press the \'End ride\' button</string>
+    <string name="description_end_ride">To end your ride, you have to type in your end-location in the field below and
+        press the \'End ride\' button
+    </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

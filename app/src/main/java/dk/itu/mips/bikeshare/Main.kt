@@ -3,7 +3,6 @@ package dk.itu.mips.bikeshare
 import android.app.Application
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import dk.itu.mips.bikeshare.viewmodel.fragments.BikeInformationFragment
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.text.SimpleDateFormat
