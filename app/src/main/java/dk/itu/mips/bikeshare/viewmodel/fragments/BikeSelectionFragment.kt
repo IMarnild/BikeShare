@@ -18,8 +18,6 @@ import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
-import java.io.File
-
 
 class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 

@@ -16,17 +16,21 @@ import java.io.File
 class BikeInformation(private val parent: BikeSelectionFragment) {
 
     private val view = parent.view!!
+    private val bikeId: TextView = this.view.findViewById(R.id.bike_id)
     private val bikeName: TextView = this.view.findViewById(R.id.bike_name)
     private val bikeLocation: TextView = this.view.findViewById(R.id.bike_location)
     private val bikeAvailable: TextView = this.view.findViewById(R.id.bike_available)
+    private val bikePrice: TextView = this.view.findViewById(R.id.bike_price)
     private val cameraButton: ImageButton = this.view.findViewById(R.id.btn_camera)
     private val photoView: ImageView = this.view.findViewById(R.id.bike_photo)
 
     lateinit var photoFile: File
 
     fun bind(bike: Bike) {
+        this.bikeId.text = bike.id.toString()
         this.bikeName.text = bike.name
         this.bikeLocation.text = bike.location
+        this.bikePrice.text = "n/a"
         this.bikeAvailable.text = bike.available.toString()
         this.photoFile = getPhotoFile(bike)
         this.camera()
