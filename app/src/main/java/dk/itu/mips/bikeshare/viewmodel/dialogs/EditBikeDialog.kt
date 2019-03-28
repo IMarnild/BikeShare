@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
@@ -28,13 +29,9 @@ class EditBikeDialog : DialogFragment() {
 
             builder.setView(layout)
 
-            this.bikeName = layout.findViewById(R.id.bike_name)
+            this.initVariables(layout)
             this.bikeName.text = this.bike?.name
-
-            this.bikeLocation = layout.findViewById(R.id.bike_location)
             this.bikeLocation.text = this.bike?.location
-
-            this.bikePrice = layout.findViewById(R.id.bike_price)
             this.bikePrice.text = this.bike?.price.toString()
 
             builder.setPositiveButton("Save") { _, _ -> this.updateBike() }
@@ -45,6 +42,12 @@ class EditBikeDialog : DialogFragment() {
 
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
+    private fun initVariables(view: View) {
+        this.bikeName = view.findViewById(R.id.bike_name)
+        this.bikeLocation = view.findViewById(R.id.bike_location)
+        this.bikePrice = view.findViewById(R.id.bike_price)
     }
 
     private fun updateBike() {
