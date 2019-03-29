@@ -6,7 +6,7 @@ import io.realm.annotations.RealmClass
 import java.io.Serializable
 
 @RealmClass
-open class Ride () : RealmObject(), Serializable {
+open class Ride () : RealmObject() {
 
     @PrimaryKey
     var id: Long = 0

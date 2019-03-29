@@ -19,7 +19,7 @@ import io.realm.kotlin.where
 
 class ActiveRideFragment : Fragment() {
 
-    private val ARG_BIKE = "bike"
+    private val ARG_BIKEID = "bike"
     private val ARG_TIME = "time"
     private var bike: Bike? = null
     private var time: String? = null
@@ -33,9 +33,17 @@ class ActiveRideFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            bike = it.getSerializable(ARG_BIKE) as Bike
+            val id= it.getLong(ARG_BIKEID)
+            this.bike = getBikeById(id)
             time = it.getString(ARG_TIME)
         }
+    }
+
+    private fun getBikeById(id: Long): Bike? {
+        val realm = Realm.getInstance(Main.getRealmConfig())
+        val bike = realm.where<Bike>().equalTo("id", id).findFirst()
+
+        return bike
     }
 
     override fun onCreateView(
@@ -96,6 +104,7 @@ class ActiveRideFragment : Fragment() {
             ride.bike!!.location = this.rideEndLocation.text.toString()
         }
 
+
         Toast.makeText(this.context!!, "Ride ended!", Toast.LENGTH_LONG)
             .show()
     }
@@ -110,10 +119,10 @@ class ActiveRideFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(bike: Bike, time: String) =
+        fun newInstance(bikeId: Long, time: String) =
             ActiveRideFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_BIKE, bike)
+                    putLong(ARG_BIKEID, bikeId)
                     putString(ARG_TIME, time)
                 }
             }

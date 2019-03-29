@@ -57,6 +57,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val realm = Realm.getInstance(Main.getRealmConfig())
         this.bikes = realm.where<Bike>().sort("id").findAll().toArray()
 
+
         this.adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_dropdown_item, bikes)
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.bikeSpinner.adapter = adapter
@@ -74,6 +75,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             newBike.price = price
         }
 
+
         this.updateSpinner(this.view!!)
 
         Toast.makeText(this.context!!, "Bike Added!", Toast.LENGTH_LONG)
@@ -90,6 +92,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             bike!!.deleteFromRealm()
         }
 
+
         this.updateSpinner(this.view!!)
 
         Toast.makeText(this.context!!, "Bike Deleted!", Toast.LENGTH_LONG)
@@ -98,7 +101,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun setListeners() {
         this.startRide.setOnClickListener {
-            Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!, Main.getDate()), fragmentManager!!)
+            Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!.id, Main.getDate()), fragmentManager!!)
         }
 
         this.addBike.setOnClickListener {

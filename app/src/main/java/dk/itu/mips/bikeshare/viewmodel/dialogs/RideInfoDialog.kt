@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.View
 import android.widget.TextView
+import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Ride
+import io.realm.Realm
+import io.realm.kotlin.where
 
 class RideInfoDialog : DialogFragment() {
 
-    private val ARG_RIDE = "ride"
+    private val ARG_RIDEID = "ride"
 
     private lateinit var bikeName: TextView
     private lateinit var startLocation: TextView
@@ -23,8 +26,15 @@ class RideInfoDialog : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            this.ride = it.getSerializable(ARG_RIDE) as Ride
+            val rideId = it.getLong(ARG_RIDEID)
+            this.ride = this.getRideById(rideId)!!
         }
+    }
+
+    private fun getRideById(id: Long): Ride? {
+        val realm = Realm.getInstance(Main.getRealmConfig())
+        val ride = realm.where<Ride>().equalTo("id", id).findFirst()
+        return ride
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -60,10 +70,10 @@ class RideInfoDialog : DialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(ride: Ride) =
+        fun newInstance(rideId: Long) =
             RideInfoDialog().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_RIDE, ride)
+                    putLong(ARG_RIDEID, rideId)
                 }
             }
     }
