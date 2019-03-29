@@ -63,22 +63,16 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         this.bikeSpinner.adapter = adapter
     }
 
-    fun addBike(name: String, location: String, price: String) {
+    fun addBike(bike: Bike) {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        val bike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
-        val index = bike?.id ?: 0
 
         realm.executeTransaction { realm ->
-            val newBike = realm.createObject<Bike>(index+1)
-            newBike.name = name
-            newBike.location = location
-            newBike.price = price
+            bike.id = this.newBikeIndex(realm)
+            realm.insertOrUpdate(bike)
         }
 
         this.updateSpinner(this.view!!)
-
-        Toast.makeText(this.context!!, "Bike Added!", Toast.LENGTH_LONG)
-            .show()
+        Main.makeToast(this.context!!, "Bike Added!")
     }
 
     fun deleteBike(id: Long) {
@@ -93,9 +87,13 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         this.updateSpinner(this.view!!)
+        Main.makeToast(this.context!!, "Bike Deleted!")
+    }
 
-        Toast.makeText(this.context!!, "Bike Deleted!", Toast.LENGTH_LONG)
-            .show()
+    private fun newBikeIndex(realm: Realm) : Long {
+        val latestBike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
+        val index = latestBike?.id ?: 0
+        return index + 1
     }
 
     private fun setListeners() {
