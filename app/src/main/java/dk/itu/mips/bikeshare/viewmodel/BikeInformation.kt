@@ -30,7 +30,8 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
         this.bikeId.text = bike.id.toString()
         this.bikeName.text = bike.name
         this.bikeLocation.text = bike.location
-        this.bikePrice.text = "n/a"
+        val price = bike.price.toString() + " DKK."
+        this.bikePrice.text = price
         this.bikeAvailable.text = bike.available.toString()
         this.photoFile = getPhotoFile(bike)
         this.camera()

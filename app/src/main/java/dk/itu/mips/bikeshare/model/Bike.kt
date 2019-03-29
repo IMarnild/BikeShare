@@ -11,8 +11,9 @@ open class Bike(
     var id: Long = 0,
     var name: String? = null,
     var location: String? = null,
+    var price: String? = null,
     var available: Boolean = true
-) : RealmObject(), Serializable {
+) : RealmObject() {
 
     fun getPhotoFilename(): String {
         return "IMG_" + this.id.toString() + ".jpg"

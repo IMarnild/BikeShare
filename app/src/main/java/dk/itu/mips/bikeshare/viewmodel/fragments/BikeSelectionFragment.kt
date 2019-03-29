@@ -57,47 +57,44 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val realm = Realm.getInstance(Main.getRealmConfig())
         this.bikes = realm.where<Bike>().sort("id").findAll().toArray()
 
+
         this.adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_dropdown_item, bikes)
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.bikeSpinner.adapter = adapter
     }
 
-    fun addBike(name: String, location: String) {
+    fun addBike(bike: Bike) {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        val bike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
-        val index = bike?.id ?: 0
-
         realm.executeTransaction { realm ->
-            val newBike = realm.createObject<Bike>(index+1)
-            newBike.name = name
-            newBike.location = location
+            bike.id = this.newBikeIndex(realm)
+            realm.insertOrUpdate(bike)
         }
 
         this.updateSpinner(this.view!!)
-
-        Toast.makeText(this.context!!, "Bike Added!", Toast.LENGTH_LONG)
-            .show()
+        Main.makeToast(this.context!!, "Bike Added!")
     }
 
     fun deleteBike(id: Long) {
-        this.adapter.remove(this.bikeIndex)
-        this.bikeSpinner.adapter = this.adapter
-
         val realm = Realm.getInstance(Main.getRealmConfig())
         realm.executeTransaction {
             val bike = realm.where<Bike>().equalTo("id", id).findFirst()
-            bike!!.deleteFromRealm()
+            this.bikeInfo.getPhotoFile(bike!!).delete()
+            bike.deleteFromRealm()
         }
 
         this.updateSpinner(this.view!!)
+        Main.makeToast(this.context!!, "Bike Deleted!")
+    }
 
-        Toast.makeText(this.context!!, "Bike Deleted!", Toast.LENGTH_LONG)
-            .show()
+    private fun newBikeIndex(realm: Realm) : Long {
+        val latestBike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
+        val index = latestBike?.id ?: 0
+        return index + 1
     }
 
     private fun setListeners() {
         this.startRide.setOnClickListener {
-            Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!, Main.getDate()), fragmentManager!!)
+            Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!.id, Main.getDate()), fragmentManager!!)
         }
 
         this.addBike.setOnClickListener {
@@ -107,9 +104,8 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         this.editBike.setOnClickListener {
-            val dialog = EditBikeDialog()
+            val dialog = EditBikeDialog.newInstance(this.bike!!)
             dialog.setTargetFragment(this,1)
-            dialog.bike = this.bike
             dialog.show(fragmentManager, "Edit Bike")
         }
     }
