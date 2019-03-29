@@ -74,7 +74,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             newBike.location = location
             newBike.price = price
         }
-        
+
         this.updateSpinner(this.view!!)
 
         Toast.makeText(this.context!!, "Bike Added!", Toast.LENGTH_LONG)
@@ -110,9 +110,8 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         this.editBike.setOnClickListener {
-            val dialog = EditBikeDialog()
+            val dialog = EditBikeDialog.newInstance(this.bike!!)
             dialog.setTargetFragment(this,1)
-            dialog.bike = this.bike
             dialog.show(fragmentManager, "Edit Bike")
         }
     }

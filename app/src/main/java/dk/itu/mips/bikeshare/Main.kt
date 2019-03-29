@@ -1,8 +1,10 @@
 package dk.itu.mips.bikeshare
 
 import android.app.Application
+import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.widget.Toast
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.text.SimpleDateFormat
@@ -32,6 +34,11 @@ class Main : Application() {
             val date = Calendar.getInstance().time
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN)
             return simpleDateFormat.format(date)
+        }
+
+        fun makeToast(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG)
+                .show()
         }
     }
 }

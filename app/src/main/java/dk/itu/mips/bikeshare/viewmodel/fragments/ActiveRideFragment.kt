@@ -42,7 +42,6 @@ class ActiveRideFragment : Fragment() {
     private fun getBikeById(id: Long): Bike? {
         val realm = Realm.getInstance(Main.getRealmConfig())
         val bike = realm.where<Bike>().equalTo("id", id).findFirst()
-
         return bike
     }
 
