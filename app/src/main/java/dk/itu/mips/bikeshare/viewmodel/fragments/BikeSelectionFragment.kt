@@ -65,7 +65,6 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     fun addBike(bike: Bike) {
         val realm = Realm.getInstance(Main.getRealmConfig())
-
         realm.executeTransaction { realm ->
             bike.id = this.newBikeIndex(realm)
             realm.insertOrUpdate(bike)
@@ -76,9 +75,6 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     fun deleteBike(id: Long) {
-        this.adapter.remove(this.bikeIndex)
-        this.bikeSpinner.adapter = this.adapter
-
         val realm = Realm.getInstance(Main.getRealmConfig())
         realm.executeTransaction {
             val bike = realm.where<Bike>().equalTo("id", id).findFirst()
