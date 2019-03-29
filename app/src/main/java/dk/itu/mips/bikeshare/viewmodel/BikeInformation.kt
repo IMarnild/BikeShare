@@ -69,7 +69,6 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
 
     fun getPhotoFile(bike: Bike): File {
         val filesDir = this.parent.context!!.filesDir
-        println(filesDir)
         return File(filesDir, bike.getPhotoFilename())
     }
 }

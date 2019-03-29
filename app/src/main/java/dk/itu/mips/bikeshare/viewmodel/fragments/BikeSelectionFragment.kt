@@ -74,8 +74,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             newBike.location = location
             newBike.price = price
         }
-
-
+        
         this.updateSpinner(this.view!!)
 
         Toast.makeText(this.context!!, "Bike Added!", Toast.LENGTH_LONG)
@@ -89,9 +88,9 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val realm = Realm.getInstance(Main.getRealmConfig())
         realm.executeTransaction {
             val bike = realm.where<Bike>().equalTo("id", id).findFirst()
-            bike!!.deleteFromRealm()
+            this.bikeInfo.getPhotoFile(bike!!).delete()
+            bike.deleteFromRealm()
         }
-
 
         this.updateSpinner(this.view!!)
 
