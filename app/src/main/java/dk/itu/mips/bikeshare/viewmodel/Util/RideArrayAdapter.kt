@@ -1,4 +1,4 @@
-package dk.itu.mips.bikeshare.viewmodel
+package dk.itu.mips.bikeshare.viewmodel.Util
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

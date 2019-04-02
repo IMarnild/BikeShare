@@ -1,4 +1,4 @@
-package dk.itu.mips.bikeshare.viewmodel
+package dk.itu.mips.bikeshare.viewmodel.Util
 
 import android.app.Activity
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.widget.Button
+import android.widget.ImageButton
 import java.io.File
 
 class Camera(private val parent: Fragment) {
@@ -22,7 +23,7 @@ class Camera(private val parent: Fragment) {
         return captureImage.resolveActivity(context.packageManager) != null
     }
 
-    private fun setButtonListener(button: Button) {
+    fun setButtonListener(button: ImageButton) {
         button.setOnClickListener {
 
             val uri = FileProvider.getUriForFile(context,"dk.itu.mips.bikeshare.fileprovider", this.photo)
@@ -50,7 +51,7 @@ class Camera(private val parent: Fragment) {
 
     private fun getBikePhoto(id: String): File {
         val filesDir = this.parent.context!!.filesDir
-        return File(filesDir, Camera.getPhotoFilename(id))
+        return File(filesDir, getPhotoFilename(id))
     }
 
     companion object {

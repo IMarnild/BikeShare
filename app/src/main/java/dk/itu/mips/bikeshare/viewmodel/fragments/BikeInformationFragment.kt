@@ -12,7 +12,7 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.Camera
+import dk.itu.mips.bikeshare.viewmodel.Util.Camera
 
 class BikeInformationFragment : Fragment() {
     private val ARG_BIKE_ID = "bike"

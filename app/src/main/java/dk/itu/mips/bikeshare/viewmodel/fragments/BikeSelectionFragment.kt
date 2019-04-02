@@ -7,11 +7,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.BikeArrayAdapter
+import dk.itu.mips.bikeshare.viewmodel.Util.BikeArrayAdapter
+import dk.itu.mips.bikeshare.viewmodel.dialogs.NewBikeDialog
 
 
 class BikeSelectionFragment : Fragment() {
@@ -19,6 +21,7 @@ class BikeSelectionFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var newBikeButton: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,6 +36,11 @@ class BikeSelectionFragment : Fragment() {
                 layoutManager =viewManager
                 adapter = viewAdapter
             }
+
+        this.newBikeButton = view.findViewById(R.id.btn_add_new_bike)
+        this.newBikeButton.setOnClickListener {
+            Main.replaceFragment(NewBikeFragment(), fragmentManager!!)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {

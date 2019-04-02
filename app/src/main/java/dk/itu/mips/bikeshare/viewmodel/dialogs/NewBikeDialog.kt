@@ -5,9 +5,13 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
+import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
+import dk.itu.mips.bikeshare.model.BikeRealm
+import dk.itu.mips.bikeshare.viewmodel.Util.Camera
 
 class NewBikeDialog : DialogFragment() {
 
@@ -15,6 +19,9 @@ class NewBikeDialog : DialogFragment() {
     private lateinit var bikeLocation: TextView
     private lateinit var bikePrice: TextView
     private lateinit var builder: AlertDialog.Builder
+    private lateinit var cameraButton: Button
+    private val bikeRealm: BikeRealm = BikeRealm()
+    private val camera: Camera = dk.itu.mips.bikeshare.viewmodel.Util.Camera(this.parentFragment!!)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -33,22 +40,27 @@ class NewBikeDialog : DialogFragment() {
         this.bikeName = view.findViewById(R.id.bike_name)
         this.bikeLocation = view.findViewById(R.id.bike_location)
         this.bikePrice = view.findViewById(R.id.bike_price)
+        this.cameraButton = view.findViewById(R.id.btn_camera)
     }
 
     private fun setListeners() {
         this.builder.setPositiveButton(R.string.add
-        ) { _, _ -> this.addBike() }
+        ) { _, _ ->
+            if (!isAnyFieldBlank()) {
+                this.addBike()
+                Main.makeToast(this.context!!, "Bike added!")
+            } else Main.makeToast(this.context!!, "Nothing added!")
+        }
 
         this.builder.setNegativeButton(R.string.cancel
         ) { _, _ -> dialog.cancel() }
+
+        //this.camera.setButtonListener(this.cameraButton)
     }
 
     private fun addBike() {
-        if (!isAnyFieldBlank()) {
             val bike = this.createBike()
-            //val parent = targetFragment as BikeSelectionFragment
-            //parent.addBike(bike)
-        }
+            this.bikeRealm.create(bike)
     }
 
     private fun createBike(): Bike {
