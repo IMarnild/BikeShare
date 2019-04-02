@@ -1,58 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical" >
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:layout_margin="15dp">
 
     <TextView
-            android:text="@string/label_select"
-            android:textSize="15sp"
+            android:text="Bikes"
+            android:textSize="25sp"
             android:textAllCaps="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/label_select"/>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:layout_marginBottom="16dp"
-            android:layout_height="wrap_content">
-
-        <Spinner
-                android:id="@+id/spinner_bike"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".7"
-                style="@style/ThemeOverlay.AppCompat.Light"
-        />
-
-        <Button
-                android:text="@string/btn_edit_bike"
-                android:textSize="12sp"
-                android:layout_width="0dp"
-                android:layout_weight=".15"
-                android:layout_height="wrap_content" android:id="@+id/btn_edit_bike"/>
-        <Button
-                android:text="@string/btn_add_new_bike"
-                android:textSize="12sp"
-                android:layout_width="0dp"
-                android:layout_weight=".15"
-                android:layout_height="wrap_content" android:id="@+id/btn_add_new_bike"/>
-    </LinearLayout>
-
-    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="20dp" android:id="@+id/textView"/>
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_bikes"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
     >
-        <include layout="@layout/bike_information"/>
-    </FrameLayout>
-
-    <Button
-            android:text="@string/btn_start_ride"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:attr/buttonBarButtonStyle"
-            android:background="@color/colorPrimaryLight" android:id="@+id/btn_start_ride"/>
-
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
-import dk.itu.mips.bikeshare.viewmodel.fragments.BikeSelectionFragment
 import io.realm.Realm
 import io.realm.kotlin.where
 

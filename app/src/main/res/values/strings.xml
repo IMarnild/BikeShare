@@ -12,7 +12,7 @@
     <string name="label_location_end">End location*</string>
     <string name="label_ride_information">Ride information</string>
     <string name="label_available">"Available: "</string>
-    <string name="label_bike_id">"Bike ID: "</string>
+    <string name="label_bike_id">"ID: "</string>
     <string name="label_bike_price">"Price/hour: "</string>
 
 
