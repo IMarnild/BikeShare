@@ -30,7 +30,7 @@ class BikeRealm {
         val realmBike = realm.where<Bike>().equalTo("id", bike.id).findFirst()
         if (realmBike != null) {
             this.realm.executeTransaction {
-                this.realm.insertOrUpdate(bike)
+                this.realm.copyToRealmOrUpdate(bike)
             }
         }
         return bike.id

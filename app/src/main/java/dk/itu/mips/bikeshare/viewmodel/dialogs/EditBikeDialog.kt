@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.TextView
 import dk.itu.mips.bikeshare.Main
@@ -18,7 +19,7 @@ class EditBikeDialog : DialogFragment() {
     private lateinit var bikeLocation: TextView
     private lateinit var bikePrice: TextView
     private lateinit var builder: AlertDialog.Builder
-    private lateinit var parent: BikeSelectionFragment
+    private lateinit var parent: Fragment
     private var bike: Bike? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -39,7 +40,7 @@ class EditBikeDialog : DialogFragment() {
         this.bikeName = view.findViewById(R.id.bike_name)
         this.bikeLocation = view.findViewById(R.id.bike_location)
         this.bikePrice = view.findViewById(R.id.bike_price)
-        this.parent = targetFragment as BikeSelectionFragment
+        this.parent = targetFragment as Fragment
     }
 
     private fun updateTextFields() {
@@ -51,10 +52,10 @@ class EditBikeDialog : DialogFragment() {
     private fun setListeners() {
         this.builder.setPositiveButton("Save") { _, _ ->
             this.updateBike()
-            this.parent.updateUI()
+            //this.parent.updateUI()
         }
         builder.setNegativeButton("Delete") { _, _ ->
-            this.parent.deleteBike(bike?.id!!)
+            //this.parent.deleteBike(bike?.id!!)
         }
     }
 

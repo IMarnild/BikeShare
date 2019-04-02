@@ -46,8 +46,8 @@ class NewBikeDialog : DialogFragment() {
     private fun addBike() {
         if (!isAnyFieldBlank()) {
             val bike = this.createBike()
-            val parent = targetFragment as BikeSelectionFragment
-            parent.addBike(bike)
+            //val parent = targetFragment as BikeSelectionFragment
+            //parent.addBike(bike)
         }
     }
 

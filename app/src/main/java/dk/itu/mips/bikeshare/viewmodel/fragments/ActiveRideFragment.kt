@@ -78,9 +78,20 @@ class ActiveRideFragment : Fragment() {
 
     private fun endActiveRide() {
         val ride = this.createRide(this.bike!!)
-        ride.bike!!.location = ride.location_end
         this.rideRealm.create(ride)
+        this.updateBikeLocation(this.bike!!, ride.location_end!!)
         Main.makeToast(this.context!!, "Ride ended!")
+    }
+
+    private fun updateBikeLocation(bike: Bike, location: String): Bike {
+        val temp = Bike()
+        temp.id = bike.id
+        temp.name = bike.name
+        temp.location = location
+        temp.available = bike.available
+        temp.price = bike.price
+        this.bikeRealm.update(temp)
+        return temp
     }
 
     private fun createRide(bike: Bike): Ride {
