@@ -2,10 +2,11 @@ package dk.itu.mips.bikeshare.model
 
 import dk.itu.mips.bikeshare.Main
 import io.realm.Realm
+import io.realm.RealmResults
 import io.realm.Sort
 import io.realm.kotlin.where
 
-class BikeRealm() {
+class BikeRealm {
 
     private val realm = Realm.getInstance(Main.getRealmConfig())
 
@@ -19,6 +20,10 @@ class BikeRealm() {
 
     fun read(id: Long): Bike? {
         return this.realm.where<Bike>().equalTo("id", id).findFirst()
+    }
+
+    fun read(): RealmResults<Bike> {
+        return this.realm.where<Bike>().sort("id", Sort.ASCENDING).findAll()
     }
 
     fun update(bike: Bike): Long {

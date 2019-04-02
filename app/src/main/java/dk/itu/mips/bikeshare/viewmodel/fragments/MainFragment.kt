@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
 
     private fun setListeners() {
         this.newRide.setOnClickListener {
-          Main.replaceFragment(BikeSelectionFragment(), fragmentManager!!)
+          Main.replaceFragment(BikeSelection(), fragmentManager!!)
         }
 
         this.rideHistory.setOnClickListener {
