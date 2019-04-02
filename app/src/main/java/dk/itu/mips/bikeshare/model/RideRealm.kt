@@ -1,10 +1,13 @@
 package dk.itu.mips.bikeshare.model
 
+import dk.itu.mips.bikeshare.Main
 import io.realm.Realm
 import io.realm.Sort
 import io.realm.kotlin.where
 
-class RideRealm(val realm: Realm) {
+class RideRealm() {
+
+    private val realm = Realm.getInstance(Main.getRealmConfig())
 
     fun create(ride: Ride): Long {
         this.realm.executeTransaction { r ->
