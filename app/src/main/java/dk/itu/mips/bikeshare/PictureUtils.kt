@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Point
+import dk.itu.mips.bikeshare.model.Bike
 
 class PictureUtils {
     companion object {
@@ -44,6 +45,10 @@ class PictureUtils {
                 .getSize(size)
 
             return getScaledBitmap(path, size.x, size.y)
+        }
+
+        fun getPhotoFilename(bike: Bike): String {
+            return "IMG_" + bike.id.toString() + ".jpg"
         }
     }
 }

@@ -42,12 +42,12 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
         val context = parent.context!!
         val captureImage = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        var canTakePhoto = this.photoFile != null && captureImage.resolveActivity(context.packageManager) != null
+        val canTakePhoto = captureImage.resolveActivity(context.packageManager) != null
         cameraButton.isEnabled = canTakePhoto
 
         cameraButton.setOnClickListener {
 
-            val uri = FileProvider.getUriForFile(context,"com.bignerdranch.android.criminalintent.fileprovider", this.photoFile)
+            val uri = FileProvider.getUriForFile(context,"dk.itu.mips.bikeshare.fileprovider", this.photoFile)
             captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri)
 
             val cameraActivities = context.packageManager.queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY)
@@ -59,7 +59,7 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
     }
 
     fun updatePhotoView() {
-        if (this.photoFile == null || !photoFile.exists()) {
+        if (!photoFile.exists()) {
             this.photoView.setImageDrawable(null)
         } else {
             val bitmap = PictureUtils.getScaledBitmap( this.photoFile.path, this.parent.activity!!)
@@ -69,6 +69,6 @@ class BikeInformation(private val parent: BikeSelectionFragment) {
 
     fun getPhotoFile(bike: Bike): File {
         val filesDir = this.parent.context!!.filesDir
-        return File(filesDir, bike.getPhotoFilename())
+        return File(filesDir, PictureUtils.getPhotoFilename(bike))
     }
 }

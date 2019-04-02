@@ -15,10 +15,6 @@ open class Bike(
     var available: Boolean = true
 ) : RealmObject() {
 
-    fun getPhotoFilename(): String {
-        return "IMG_" + this.id.toString() + ".jpg"
-    }
-
     override fun toString(): String {
         return "" + this.id + ": " + this.name
     }

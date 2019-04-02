@@ -129,7 +129,7 @@ class BikeSelectionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 2) {
-            val uri = FileProvider.getUriForFile(activity!!, "com.bignerdranch.android.criminalintent.fileprovider", bikeInfo.photoFile)
+            val uri = FileProvider.getUriForFile(activity!!, "dk.itu.mips.bikeshare.fileprovider", bikeInfo.photoFile)
             activity!!.revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             bikeInfo.updatePhotoView()
         }

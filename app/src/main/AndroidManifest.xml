@@ -18,7 +18,7 @@
         </activity>
         <provider
                 android:name="android.support.v4.content.FileProvider"
-                android:authorities="com.bignerdranch.android.criminalintent.fileprovider"
+                android:authorities="dk.itu.mips.bikeshare.fileprovider"
                 android:exported="false"
                 android:grantUriPermissions="true">
         <meta-data
