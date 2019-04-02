@@ -85,6 +85,11 @@ class ActiveRideFragment : Fragment() {
     }
 
     private fun endActiveRide() {
+        this.addRideToRealm(this.bike!!)
+        Main.makeToast(this.context!!, "Ride ended!")
+    }
+
+    private fun addRideToRealm(bike: Bike) {
         val realm = Realm.getInstance(Main.getRealmConfig())
         val last =  realm.where<Ride>().sort("id", Sort.DESCENDING).findFirst()
         val index = last?.id ?: 0
@@ -92,9 +97,9 @@ class ActiveRideFragment : Fragment() {
         realm.executeTransaction { realm ->
             // Add a ride
             val ride = realm.createObject<Ride>(index+1)
-            ride.bike = this.bike
-            ride.bikeName = this.bike!!.name
-            ride.location_start = this.bike!!.location
+            ride.bike = bike
+            ride.bikeName = bike.name
+            ride.location_start = bike.location
             ride.location_end = this.rideEndLocation.text.toString()
             ride.time_start = this.time
             ride.time_end = Main.getDate()
@@ -102,10 +107,6 @@ class ActiveRideFragment : Fragment() {
             // Update bike location
             ride.bike!!.location = this.rideEndLocation.text.toString()
         }
-
-
-        Toast.makeText(this.context!!, "Ride ended!", Toast.LENGTH_LONG)
-            .show()
     }
 
     fun noEndLocationWarning() {
