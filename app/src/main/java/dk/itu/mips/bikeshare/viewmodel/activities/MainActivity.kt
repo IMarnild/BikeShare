@@ -33,10 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         fragments.map { f ->
             if (f is ActiveRideFragment) {
-                var activeRide = f as ActiveRideFragment
-
-                handled = activeRide.endLocationIsBlank()
-                if (handled) activeRide.noEndLocationWarning()
+                handled = f.endLocationIsBlank()
+                if (handled) f.noEndLocationWarning()
             }
         }
 

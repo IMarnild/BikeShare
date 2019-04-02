@@ -52,7 +52,7 @@ class EditBikeDialog : DialogFragment() {
 
     private fun setListeners() {
         this.builder.setPositiveButton("Save") { _, _ ->
-            this.updateBike()
+            this.updateBike(this.bike!!)
             this.parent.updateUI()
         }
         builder.setNegativeButton("Delete") { _, _ ->
@@ -60,9 +60,9 @@ class EditBikeDialog : DialogFragment() {
         }
     }
 
-    private fun updateBike() {
+    private fun updateBike(bike: Bike): Bike? {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        val realmBike = realm.where<Bike>().equalTo("id", this.bike?.id).findFirst()
+        val realmBike = realm.where<Bike>().equalTo("id", bike.id).findFirst()
         realm.executeTransaction {
             realmBike!!.name = this.bikeName.text.toString()
             realmBike.location = this.bikeLocation.text.toString()
@@ -70,6 +70,7 @@ class EditBikeDialog : DialogFragment() {
         }
 
         Main.makeToast(this.parent.context!!, "Bike updated!")
+        return realmBike
     }
 
     companion object {

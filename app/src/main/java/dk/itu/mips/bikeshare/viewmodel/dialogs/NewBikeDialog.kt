@@ -2,14 +2,9 @@ package dk.itu.mips.bikeshare.viewmodel.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
-import android.support.v4.content.FileProvider
 import android.view.View
-import android.widget.ImageButton
 import android.widget.TextView
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -17,6 +12,7 @@ import dk.itu.mips.bikeshare.viewmodel.fragments.BikeSelectionFragment
 
 class NewBikeDialog : DialogFragment() {
 
+    private lateinit var parent: BikeSelectionFragment
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
     private lateinit var bikePrice: TextView
@@ -39,6 +35,7 @@ class NewBikeDialog : DialogFragment() {
         this.bikeName = view.findViewById(R.id.bike_name)
         this.bikeLocation = view.findViewById(R.id.bike_location)
         this.bikePrice = view.findViewById(R.id.bike_price)
+        this.parent = targetFragment as BikeSelectionFragment
     }
 
     private fun setListeners() {
@@ -49,12 +46,11 @@ class NewBikeDialog : DialogFragment() {
         ) { _, _ -> dialog.cancel() }
     }
 
-    private fun addBike() {
-        if (!isAnyFieldBlank()) {
+    private fun addBike(): Bike? {
+        return if (!isAnyFieldBlank()) {
             val bike = this.createBike()
-            val parent = targetFragment as BikeSelectionFragment
-            parent.addBike(bike)
-        }
+            this.parent.addBike(bike)
+        } else null
     }
 
     private fun createBike(): Bike {

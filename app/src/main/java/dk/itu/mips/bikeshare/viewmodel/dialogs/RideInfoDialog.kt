@@ -33,8 +33,7 @@ class RideInfoDialog : DialogFragment() {
 
     private fun getRideById(id: Long): Ride? {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        val ride = realm.where<Ride>().equalTo("id", id).findFirst()
-        return ride
+        return realm.where<Ride>().equalTo("id", id).findFirst()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
