@@ -13,7 +13,6 @@ import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.viewmodel.Util.BikeArrayAdapter
-import dk.itu.mips.bikeshare.viewmodel.dialogs.NewBikeDialog
 
 
 class BikeSelectionFragment : Fragment() {

@@ -43,9 +43,23 @@
 
     </LinearLayout>
 
+    <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:scaleType="center"
+            android:cropToPadding="true"
+            android:background="@color/colorBackground"
+            android:id="@+id/bike_photo"/>
+
     <ImageButton
             android:src="@android:drawable/ic_menu_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_camera"/>
+
+    <Button
+            android:text="@string/btn_add_new_bike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/btn_add_new_bike"/>
 </LinearLayout>

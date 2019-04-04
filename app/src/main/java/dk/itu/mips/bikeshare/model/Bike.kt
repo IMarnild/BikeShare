@@ -1,5 +1,6 @@
 package dk.itu.mips.bikeshare.model
 
+import android.graphics.Bitmap
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
@@ -12,6 +13,7 @@ open class Bike(
     var name: String? = null,
     var location: String? = null,
     var price: String? = null,
+    var photo: ByteArray? = ByteArray(0),
     var available: Boolean = true
 ) : RealmObject() {
 

@@ -2,11 +2,13 @@ package dk.itu.mips.bikeshare
 
 import android.app.Application
 import android.content.Context
+import android.graphics.*
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.widget.Toast
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +41,21 @@ class Main : Application() {
         fun makeToast(context: Context, message: String) {
             Toast.makeText(context, message, Toast.LENGTH_LONG)
                 .show()
+        }
+
+        fun makeToast(context: Context, message: String, length: Int) {
+            Toast.makeText(context, message, length)
+                .show()
+        }
+
+        fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            return stream.toByteArray()
+        }
+
+        fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
+            return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         }
     }
 }

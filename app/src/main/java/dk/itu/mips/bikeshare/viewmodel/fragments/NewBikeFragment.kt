@@ -1,24 +1,31 @@
 package dk.itu.mips.bikeshare.viewmodel.fragments
 
-import android.app.AlertDialog
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
+import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.Util.Camera
+import dk.itu.mips.bikeshare.viewmodel.Util.SpyCam
+import dk.itu.mips.bikeshare.viewmodel.Util.REQUEST_IMAGE_CAPTURE
+
 class NewBikeFragment : Fragment() {
 
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
     private lateinit var bikePrice: TextView
     private lateinit var cameraButton: ImageButton
-    private lateinit var camera: Camera
+    private lateinit var addBikeButton: Button
+    private lateinit var imageView: ImageView
+    private lateinit var camera: SpyCam
+    private var photo: Bitmap? = null
 
     private val bikeRealm: BikeRealm = BikeRealm()
 
@@ -37,12 +44,43 @@ class NewBikeFragment : Fragment() {
         this.bikeLocation = view.findViewById(R.id.bike_location)
         this.bikePrice = view.findViewById(R.id.bike_price)
         this.cameraButton = view.findViewById(R.id.btn_camera)
-        this.camera = Camera(this)
+        this.imageView = view.findViewById(R.id.bike_photo)
+        this.addBikeButton = view.findViewById(R.id.btn_add_new_bike)
+        this.camera = SpyCam(this)
     }
 
     private fun setButtonListeners() {
-        camera.setButtonListener(this.cameraButton)
-        this.cameraButton.isEnabled = false
+        this.cameraButton = camera.setButtonListener(this.cameraButton)
+        this.addBikeButton.setOnClickListener {
+            if (!this.isAnyFieldBlank()) {
+                val bike = this.createBike()
+                this.bikeRealm.create(bike)
+                Main.replaceFragment(BikeSelectionFragment(), this.fragmentManager!!)
+                Main.makeToast(this.context!!, "Bike added!")
+            } else {
+                Main.makeToast(this.context!!, "Empty field!", Toast.LENGTH_SHORT)
+            }
+        }
+    }
+
+    private fun createBike(): Bike {
+        val bike = Bike()
+        bike.name = this.bikeName.text.toString()
+        bike.location = this.bikeLocation.text.toString()
+        bike.price = this.bikePrice.text.toString()
+        if (this.photo != null) { bike.photo = Main.bitmapToByteArray(this.photo!!) }
+        return bike
+    }
+
+    private fun isAnyFieldBlank(): Boolean {
+        return bikeName.text.isBlank() || bikeLocation.text.isBlank() || bikePrice.text.isBlank() || photo == null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            this.photo =  data.extras?.get("data") as Bitmap
+            this.imageView.setImageBitmap(this.photo)
+        }
     }
 }
 

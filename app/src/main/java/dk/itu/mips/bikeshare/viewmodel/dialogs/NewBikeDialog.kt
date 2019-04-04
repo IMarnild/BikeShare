@@ -11,7 +11,7 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.Util.Camera
+import dk.itu.mips.bikeshare.viewmodel.Util.SpyCam
 
 class NewBikeDialog : DialogFragment() {
 
@@ -21,7 +21,7 @@ class NewBikeDialog : DialogFragment() {
     private lateinit var builder: AlertDialog.Builder
     private lateinit var cameraButton: Button
     private val bikeRealm: BikeRealm = BikeRealm()
-    private val camera: Camera = dk.itu.mips.bikeshare.viewmodel.Util.Camera(this.parentFragment!!)
+    private val camera: SpyCam = dk.itu.mips.bikeshare.viewmodel.Util.SpyCam(this.parentFragment!!)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
