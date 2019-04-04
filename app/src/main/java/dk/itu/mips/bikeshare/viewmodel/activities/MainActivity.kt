@@ -28,15 +28,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 
-        var fragments = supportFragmentManager.fragments
+        val fragments = supportFragmentManager.fragments
         var handled = false
 
         fragments.map { f ->
             if (f is ActiveRideFragment) {
-                var activeRide = f as ActiveRideFragment
-
-                handled = activeRide.endLocationIsBlank()
-                if (handled) activeRide.noEndLocationWarning()
+                handled = f.endLocationIsBlank()
+                if (handled) f.noEndLocationWarning()
             }
         }
 

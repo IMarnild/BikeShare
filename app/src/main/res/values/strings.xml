@@ -14,12 +14,13 @@
     <string name="label_available">"Available: "</string>
     <string name="label_bike_id">"ID: "</string>
     <string name="label_bike_price">"Price/hour: "</string>
+    <string name="label_bike_list">Select a bike</string>
 
 
     <string name="btn_start_ride">Start Ride!</string>
     <string name="btn_end_ride">End Ride</string>
     <string name="btn_history_ride">Ride History</string>
-    <string name="btn_new_ride">New Ride</string>
+    <string name="btn_new_ride">Select bike</string>
     <string name="btn_add_new_bike">Create new bike</string>
     <string name="btn_edit_bike">Edit</string>
 

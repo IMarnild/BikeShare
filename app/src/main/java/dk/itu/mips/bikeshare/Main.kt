@@ -6,6 +6,7 @@ import android.graphics.*
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.widget.Toast
+import dk.itu.mips.bikeshare.model.Wallet
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.io.ByteArrayOutputStream
@@ -17,6 +18,17 @@ class Main : Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
+        this.initWallet()
+    }
+
+    private fun initWallet() {
+        val realm = Realm.getInstance(Main.getRealmConfig())
+        realm.executeTransaction { r ->
+            val wallet = Wallet()
+            wallet.id = 1
+            wallet.money = 500
+            r.insertOrUpdate(wallet)
+        }
     }
 
     companion object {

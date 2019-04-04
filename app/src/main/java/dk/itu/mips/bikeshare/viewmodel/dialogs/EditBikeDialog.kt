@@ -25,7 +25,7 @@ class EditBikeDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val inflater = requireActivity().layoutInflater
-            val layout = inflater.inflate(R.layout.dialog_bike_new, null)
+            val layout = inflater.inflate(R.layout.fragment_new_bike, null)
             this.builder = AlertDialog.Builder(it)
                 .setView(layout)
 

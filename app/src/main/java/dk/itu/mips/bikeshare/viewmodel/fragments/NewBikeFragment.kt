@@ -30,7 +30,7 @@ class NewBikeFragment : Fragment() {
     private val bikeRealm: BikeRealm = BikeRealm()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
-        return inflater.inflate(R.layout.dialog_bike_new, container, false)
+        return inflater.inflate(R.layout.fragment_new_bike, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
