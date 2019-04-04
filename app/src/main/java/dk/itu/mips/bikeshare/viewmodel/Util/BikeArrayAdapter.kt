@@ -3,7 +3,9 @@ package dk.itu.mips.bikeshare.viewmodel.Util
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 
@@ -19,6 +21,7 @@ class BikeArrayAdapter(private val myDataset: List<Any>, val listener: (Bike) ->
 
         var bike: TextView = itemView.findViewById(R.id.bike_name)
         var location: TextView = itemView.findViewById(R.id.bike_location)
+        var photo: ImageView = itemView.findViewById(R.id.bike_photo)
 
         fun setOnClickListener(bike: Bike, listener: (Bike) -> Unit) {
             itemView.setOnClickListener {
@@ -42,6 +45,7 @@ class BikeArrayAdapter(private val myDataset: List<Any>, val listener: (Bike) ->
 
         holder.bike.text = bike.name
         holder.location.text = bike.location
+        holder.photo.setImageBitmap(Main.byteArrayToBitmap(bike.photo!!))
         holder.setOnClickListener(bike, this.listener)
     }
 
