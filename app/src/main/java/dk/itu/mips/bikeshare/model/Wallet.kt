@@ -8,5 +8,5 @@ import io.realm.annotations.RealmClass
 open class Wallet (
     @PrimaryKey
     var id: Long = 0,
-    var money: Long = 0
+    var money: Double = 0.0
 ) : RealmObject()

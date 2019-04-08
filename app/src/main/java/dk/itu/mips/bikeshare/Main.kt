@@ -1,10 +1,16 @@
 package dk.itu.mips.bikeshare
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.getSystemService
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import dk.itu.mips.bikeshare.model.Wallet
 import io.realm.Realm
@@ -26,7 +32,7 @@ class Main : Application() {
         realm.executeTransaction { r ->
             val wallet = Wallet()
             wallet.id = 1
-            wallet.money = 500
+            wallet.money = 500.0
             r.insertOrUpdate(wallet)
         }
     }
@@ -68,6 +74,11 @@ class Main : Application() {
 
         fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
             return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        }
+
+        fun hideKeyboard(context: Context, view: View) {
+            val inputMethodManager: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }

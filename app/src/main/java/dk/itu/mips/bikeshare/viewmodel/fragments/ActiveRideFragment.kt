@@ -13,6 +13,9 @@ import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.model.Ride
 import dk.itu.mips.bikeshare.model.RideRealm
+import dk.itu.mips.bikeshare.viewmodel.dialogs.PayDialog
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ActiveRideFragment : Fragment() {
 
@@ -28,6 +31,7 @@ class ActiveRideFragment : Fragment() {
     private lateinit var rideTimeStart: TextView
     private lateinit var rideEndLocation: TextView
     private lateinit var endRide: Button
+    private lateinit var ride: Ride
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,16 +74,19 @@ class ActiveRideFragment : Fragment() {
             if (this.endLocationIsBlank()) {
                 this.noEndLocationWarning()
             } else {
-                this.endActiveRide()
-                Main.replaceFragment(MainFragment(), fragmentManager!!)
+                this.rideEndLocation.clearFocus()
+                Main.hideKeyboard(this.context!!, this.view!!)
+                this.ride = this.createRide(this.bike!!)
+                val dialog = PayDialog.newInstance(this.calculatePrice(this.ride))
+                dialog.setTargetFragment(this, 1)
+                dialog.show(fragmentManager, "Payment")
             }
         }
     }
 
-    private fun endActiveRide() {
-        val ride = this.createRide(this.bike!!)
-        this.rideRealm.create(ride)
-        this.updateBikeLocation(this.bike!!, ride.location_end!!)
+    fun endActiveRide() {
+        this.rideRealm.create(this.ride)
+        this.updateBikeLocation(this.bike!!, this.ride.location_end!!)
         Main.makeToast(this.context!!, "Ride ended!")
     }
 
@@ -90,6 +97,7 @@ class ActiveRideFragment : Fragment() {
         temp.location = location
         temp.available = bike.available
         temp.price = bike.price
+        temp.photo = bike.photo
         this.bikeRealm.update(temp)
         return temp
     }
@@ -103,6 +111,19 @@ class ActiveRideFragment : Fragment() {
         ride.time_start = this.time
         ride.time_end = Main.getDate()
         return ride
+    }
+
+    private fun timeDifferenceInSeconds(start: String?, end: String?): Double {
+        val time = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(start)
+        val time2 = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(end)
+        return (time2.time - time.time).toDouble()/1000
+    }
+
+    private fun calculatePrice(ride: Ride): Double {
+        val price = ride.bike!!.price!!.toLong()
+        val time = this.timeDifferenceInSeconds(ride.time_start, ride.time_end)
+        val hours = time/60/60
+        return  hours * price
     }
 
     fun noEndLocationWarning() {

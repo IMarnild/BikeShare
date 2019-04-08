@@ -45,7 +45,7 @@ class WalletFragment : Fragment() {
 
     private fun updateUI() {
         val wallet = realm.where<Wallet>().findFirst()
-        val amount = wallet!!.money.toString() + " DKK."
+        val amount = String.format("%.2f", wallet!!.money) + " DKK."
         this.money.text = amount
     }
 }
