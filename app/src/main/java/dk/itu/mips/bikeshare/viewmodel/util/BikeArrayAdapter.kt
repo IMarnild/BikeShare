@@ -1,5 +1,6 @@
 package dk.itu.mips.bikeshare.viewmodel.util
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ class BikeArrayAdapter(private val myDataset: List<Any>, val listener: (Bike) ->
 
         var bike: TextView = itemView.findViewById(R.id.bike_name)
         var location: TextView = itemView.findViewById(R.id.bike_location)
+        var price: TextView = itemView.findViewById(R.id.bike_price)
+        var available: TextView = itemView.findViewById(R.id.bike_available)
         var photo: ImageView = itemView.findViewById(R.id.bike_photo)
 
         fun setOnClickListener(bike: Bike, listener: (Bike) -> Unit) {
@@ -45,6 +48,14 @@ class BikeArrayAdapter(private val myDataset: List<Any>, val listener: (Bike) ->
 
         holder.bike.text = bike.name
         holder.location.text = bike.location
+        holder.price.text = bike.pricePerHour + " Dkk/hour"
+        if (bike.available) {
+            holder.available.text = "available"
+            holder.available.setTextColor(Color.GREEN)
+        } else {
+            holder.available.text = "unavailable"
+            holder.available.setTextColor(Color.RED)
+        }
         holder.photo.setImageBitmap(BikeCamera.byteArrayToBitmap(bike.photo!!))
         holder.setOnClickListener(bike, this.listener)
     }
