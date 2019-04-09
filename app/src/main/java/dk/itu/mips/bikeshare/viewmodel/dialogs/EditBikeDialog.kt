@@ -46,7 +46,7 @@ class EditBikeDialog : DialogFragment() {
     private fun updateTextFields() {
         this.bikeName.text = this.bike?.name
         this.bikeLocation.text = this.bike?.location
-        this.bikePrice.text = this.bike?.price.toString()
+        this.bikePrice.text = this.bike?.pricePerHour.toString()
     }
 
     private fun setListeners() {
@@ -65,7 +65,7 @@ class EditBikeDialog : DialogFragment() {
         realm.executeTransaction {
             realmBike!!.name = this.bikeName.text.toString()
             realmBike.location = this.bikeLocation.text.toString()
-            realmBike.price = this.bikePrice.text.toString()
+            realmBike.pricePerHour = this.bikePrice.text.toString()
         }
 
         Main.makeToast(this.parent.context!!, "Bike updated!")

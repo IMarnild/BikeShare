@@ -9,11 +9,11 @@ import android.widget.ImageButton
 
 const val REQUEST_IMAGE_CAPTURE = 1
 
-class SpyCam(private val parent: Fragment) {
+class BikeCamera(private val parent: Fragment) {
 
     private val context = parent.context!!
 
-    fun setButtonListener(button: ImageButton): ImageButton {
+    fun attachCamera(button: ImageButton): ImageButton {
         button.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.resolveActivity(context.packageManager)?.also {

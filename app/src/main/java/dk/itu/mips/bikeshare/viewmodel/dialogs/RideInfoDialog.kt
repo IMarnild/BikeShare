@@ -21,6 +21,7 @@ class RideInfoDialog : DialogFragment() {
     private lateinit var endLocation: TextView
     private lateinit var startTime: TextView
     private lateinit var endTime: TextView
+    private lateinit var rideCost: TextView
     private lateinit var ride: Ride
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +34,7 @@ class RideInfoDialog : DialogFragment() {
 
     private fun getRideById(id: Long): Ride? {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        val ride = realm.where<Ride>().equalTo("id", id).findFirst()
-        return ride
+        return realm.where<Ride>().equalTo("id", id).findFirst()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -58,14 +58,16 @@ class RideInfoDialog : DialogFragment() {
         this.endLocation = view.findViewById(R.id.ride_location_end)
         this.startTime = view.findViewById(R.id.ride_time_start)
         this.endTime = view.findViewById(R.id.ride_time_end)
+        this.rideCost = view.findViewById(R.id.ride_cost)
     }
 
     fun setVariables() {
         this.bikeName.text = ride.bikeName
-        this.startLocation.text = ride.location_start
-        this.endLocation.text = ride.location_end
-        this.startTime.text = ride.time_start
-        this.endTime.text = ride.time_end
+        this.startLocation.text = ride.startLocation
+        this.endLocation.text = ride.endLocation
+        this.startTime.text = ride.startTime
+        this.endTime.text = ride.endTime
+        this.rideCost.text = String.format("%.2f", this.ride.cost).plus(" Dkk.")
     }
 
     companion object {

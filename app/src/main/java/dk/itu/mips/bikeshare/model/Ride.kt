@@ -10,10 +10,11 @@ open class Ride () : RealmObject() {
 
     @PrimaryKey
     var id: Long = 0
-    var location_start: String? = null
-    var location_end: String? = null
-    var time_start: String? = null
-    var time_end: String? = null
+    var startLocation: String? = null
+    var endLocation: String? = null
+    var startTime: String? = null
+    var endTime: String? = null
     var bike: Bike? = null
     var bikeName: String? = null
+    var cost: Double? = null
 }

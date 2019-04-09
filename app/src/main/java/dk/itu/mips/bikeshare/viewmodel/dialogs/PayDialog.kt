@@ -16,7 +16,7 @@ import io.realm.kotlin.where
 
 class PayDialog : DialogFragment() {
 
-    private val ARG_PRICE = "price"
+    private val ARG_PRICE = "pricePerHour"
     private val realm = Realm.getInstance(Main.getRealmConfig())
     private lateinit var parent: ActiveRideFragment
     private lateinit var priceLabel: TextView
@@ -39,8 +39,10 @@ class PayDialog : DialogFragment() {
             builder.setTitle("Receipt")
 
             this.initVariables(layout)
-            this.setVariables()
+            this.priceLabel.text = String.format("%.2f", this.price)
+
             builder.setPositiveButton("Ok") { _, _ ->
+                this.parent.ride.cost = this.price
                 this.parent.endActiveRide()
                 this.withdrawMoney(this.price)
                 Main.replaceFragment(MainFragment(), fragmentManager!!)
@@ -49,13 +51,9 @@ class PayDialog : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    fun initVariables(view: View) {
+    private fun initVariables(view: View) {
         this.priceLabel = view.findViewById(R.id.label_price)
         this.parent = targetFragment as ActiveRideFragment
-    }
-
-    fun setVariables() {
-        this.priceLabel.text = String.format("%.2f", this.price)
     }
 
     private fun withdrawMoney(amount: Double): Double {

@@ -31,7 +31,7 @@ class ActiveRideFragment : Fragment() {
     private lateinit var rideTimeStart: TextView
     private lateinit var rideEndLocation: TextView
     private lateinit var endRide: Button
-    private lateinit var ride: Ride
+    lateinit var ride: Ride
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +86,7 @@ class ActiveRideFragment : Fragment() {
 
     fun endActiveRide() {
         this.rideRealm.create(this.ride)
-        this.updateBikeLocation(this.bike!!, this.ride.location_end!!)
+        this.updateBikeLocation(this.bike!!, this.ride.endLocation!!)
         Main.makeToast(this.context!!, "Ride ended!")
     }
 
@@ -96,7 +96,7 @@ class ActiveRideFragment : Fragment() {
         temp.name = bike.name
         temp.location = location
         temp.available = bike.available
-        temp.price = bike.price
+        temp.pricePerHour = bike.pricePerHour
         temp.photo = bike.photo
         this.bikeRealm.update(temp)
         return temp
@@ -106,10 +106,10 @@ class ActiveRideFragment : Fragment() {
         val ride = Ride()
         ride.bike = bike
         ride.bikeName = bike.name
-        ride.location_start = bike.location
-        ride.location_end = this.rideEndLocation.text.toString()
-        ride.time_start = this.time
-        ride.time_end = Main.getDate()
+        ride.startLocation = bike.location
+        ride.endLocation = this.rideEndLocation.text.toString()
+        ride.startTime = this.time
+        ride.endTime = Main.getDate()
         return ride
     }
 
@@ -120,8 +120,8 @@ class ActiveRideFragment : Fragment() {
     }
 
     private fun calculatePrice(ride: Ride): Double {
-        val price = ride.bike!!.price!!.toLong()
-        val time = this.timeDifferenceInSeconds(ride.time_start, ride.time_end)
+        val price = ride.bike!!.pricePerHour!!.toLong()
+        val time = this.timeDifferenceInSeconds(ride.startTime, ride.endTime)
         val hours = time/60/60
         return  hours * price
     }

@@ -14,7 +14,6 @@ import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.viewmodel.Util.BikeArrayAdapter
 
-
 class BikeSelectionFragment : Fragment() {
     private val bikeRealm: BikeRealm = BikeRealm()
     private lateinit var recyclerView: RecyclerView

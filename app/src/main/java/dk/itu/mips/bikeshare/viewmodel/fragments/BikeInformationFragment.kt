@@ -12,7 +12,7 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.Util.SpyCam
+import dk.itu.mips.bikeshare.viewmodel.Util.BikeCamera
 
 class BikeInformationFragment : Fragment() {
     private val ARG_BIKE_ID = "bike"
@@ -64,7 +64,7 @@ class BikeInformationFragment : Fragment() {
             this.bikeName.text = bike.name
             this.bikeLocation.text = bike.location
             this.bikeAvailable.text = bike.available.toString()
-            val price = bike.price + " DKK."
+            val price = bike.pricePerHour + " DKK."
             this.bikePrice.text = price
         }
     }
@@ -72,7 +72,7 @@ class BikeInformationFragment : Fragment() {
     fun updatePhotoView() {
         if (this.bike!!.photo != null) {
             val bitmap = Main.byteArrayToBitmap(this.bike!!.photo!!)
-            this.bikePhoto.setImageBitmap(SpyCam.getScaledBitmap(bitmap, this.activity!!))
+            this.bikePhoto.setImageBitmap(BikeCamera.getScaledBitmap(bitmap, this.activity!!))
         } else {
             this.bikePhoto.setImageDrawable(null)
         }

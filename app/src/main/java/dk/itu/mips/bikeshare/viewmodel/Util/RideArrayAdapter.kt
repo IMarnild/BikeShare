@@ -41,7 +41,7 @@ class RideArrayAdapter(private val myDataset: List<Any>, val listener: (Ride) ->
         val ride = myDataset[position] as Ride
 
         holder.bike.text = ride.bikeName
-        holder.date.text = ride.time_start
+        holder.date.text = ride.startTime
         holder.setOnClickListener(ride, this.listener)
     }
 

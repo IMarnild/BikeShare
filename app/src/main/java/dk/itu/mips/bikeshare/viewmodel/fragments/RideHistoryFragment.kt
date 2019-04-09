@@ -44,7 +44,7 @@ class RideHistoryFragment : Fragment() {
 
     private fun read(): RealmResults<Ride> {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        return realm.where<Ride>().sort("time_end", Sort.DESCENDING).findAll()
+        return realm.where<Ride>().sort("endTime", Sort.DESCENDING).findAll()
     }
 
     private fun onListItemClicked(ride: Ride) {

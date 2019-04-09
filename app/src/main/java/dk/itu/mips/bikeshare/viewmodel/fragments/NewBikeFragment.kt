@@ -13,7 +13,7 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.Util.SpyCam
+import dk.itu.mips.bikeshare.viewmodel.Util.BikeCamera
 import dk.itu.mips.bikeshare.viewmodel.Util.REQUEST_IMAGE_CAPTURE
 
 class NewBikeFragment : Fragment() {
@@ -24,7 +24,7 @@ class NewBikeFragment : Fragment() {
     private lateinit var cameraButton: ImageButton
     private lateinit var addBikeButton: Button
     private lateinit var imageView: ImageView
-    private lateinit var camera: SpyCam
+    private lateinit var camera: BikeCamera
     private var photo: Bitmap? = null
 
     private val bikeRealm: BikeRealm = BikeRealm()
@@ -46,11 +46,11 @@ class NewBikeFragment : Fragment() {
         this.cameraButton = view.findViewById(R.id.btn_camera)
         this.imageView = view.findViewById(R.id.bike_photo)
         this.addBikeButton = view.findViewById(R.id.btn_add_new_bike)
-        this.camera = SpyCam(this)
+        this.camera = BikeCamera(this)
     }
 
     private fun setButtonListeners() {
-        this.cameraButton = camera.setButtonListener(this.cameraButton)
+        this.cameraButton = camera.attachCamera(this.cameraButton)
         this.addBikeButton.setOnClickListener {
             if (!this.isAnyFieldBlank()) {
                 val bike = this.createBike()
@@ -67,7 +67,7 @@ class NewBikeFragment : Fragment() {
         val bike = Bike()
         bike.name = this.bikeName.text.toString()
         bike.location = this.bikeLocation.text.toString()
-        bike.price = this.bikePrice.text.toString()
+        bike.pricePerHour = this.bikePrice.text.toString()
         if (this.photo != null) { bike.photo = Main.bitmapToByteArray(this.photo!!) }
         return bike
     }
