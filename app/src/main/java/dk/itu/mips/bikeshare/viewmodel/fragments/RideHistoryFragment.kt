@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Ride
-import dk.itu.mips.bikeshare.viewmodel.RideArrayAdapter
+import dk.itu.mips.bikeshare.viewmodel.util.RideArrayAdapter
 import dk.itu.mips.bikeshare.viewmodel.dialogs.RideInfoDialog
 import io.realm.Realm
 import io.realm.RealmResults
@@ -44,7 +44,7 @@ class RideHistoryFragment : Fragment() {
 
     private fun read(): RealmResults<Ride> {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        return realm.where<Ride>().sort("time_end", Sort.DESCENDING).findAll()
+        return realm.where<Ride>().sort("endTime", Sort.DESCENDING).findAll()
     }
 
     private fun onListItemClicked(ride: Ride) {

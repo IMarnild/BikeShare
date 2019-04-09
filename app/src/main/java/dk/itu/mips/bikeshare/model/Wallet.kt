@@ -5,12 +5,8 @@ import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
 @RealmClass
-open class Bike (
+open class Wallet (
     @PrimaryKey
     var id: Long = 0,
-    var name: String? = null,
-    var location: String? = null,
-    var pricePerHour: String? = null,
-    var photo: ByteArray? = ByteArray(0),
-    var available: Boolean = true
+    var money: Double = 0.0
 ) : RealmObject()

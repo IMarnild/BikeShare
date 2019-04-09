@@ -1,10 +1,13 @@
 package dk.itu.mips.bikeshare
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.widget.Toast
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import dk.itu.mips.bikeshare.model.Wallet
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.text.SimpleDateFormat
@@ -15,6 +18,17 @@ class Main : Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
+        this.initWallet()
+    }
+
+    private fun initWallet() {
+        val realm = Realm.getInstance(Main.getRealmConfig())
+        realm.executeTransaction { r ->
+            val wallet = Wallet()
+            wallet.id = 1
+            wallet.money = 100.0
+            r.insertOrUpdate(wallet)
+        }
     }
 
     companion object {
@@ -36,9 +50,15 @@ class Main : Application() {
             return simpleDateFormat.format(date)
         }
 
-        fun makeToast(context: Context, message: String) {
-            Toast.makeText(context, message, Toast.LENGTH_LONG)
-                .show()
+        fun hideKeyboard(context: Context, view: View) {
+            val inputMethodManager: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        fun timeDifferenceInSeconds(start: String?, end: String?): Double {
+            val time = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(start)
+            val time2 = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(end)
+            return (time2.time - time.time).toDouble()/1000
         }
     }
 }

@@ -119,4 +119,14 @@
             style="?android:attr/buttonBarButtonStyle"
             android:background="@color/colorPrimaryLight"
             android:layout_height="wrap_content"/>
+
+
+    <Button
+            android:id="@+id/btn_gps"
+            android:layout_margin="10dp"
+            android:text="GPS"
+            android:layout_width="match_parent"
+            style="?android:attr/buttonBarButtonStyle"
+            android:background="@color/colorPrimaryLight"
+            android:layout_height="wrap_content"/>
 </LinearLayout>

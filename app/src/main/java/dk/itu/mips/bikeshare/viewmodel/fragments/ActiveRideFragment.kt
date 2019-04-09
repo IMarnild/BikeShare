@@ -11,11 +11,11 @@ import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
+import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.model.Ride
-import io.realm.Realm
-import io.realm.Sort
-import io.realm.kotlin.createObject
-import io.realm.kotlin.where
+import dk.itu.mips.bikeshare.model.RideRealm
+import dk.itu.mips.bikeshare.viewmodel.dialogs.PayDialog
+import dk.itu.mips.bikeshare.viewmodel.util.GPS
 
 class ActiveRideFragment : Fragment() {
 
@@ -23,26 +23,26 @@ class ActiveRideFragment : Fragment() {
     private val ARG_TIME = "time"
     private var bike: Bike? = null
     private var time: String? = null
+    private val rideRealm: RideRealm = RideRealm()
+    private val bikeRealm: BikeRealm = BikeRealm()
 
+    private lateinit var gps: GPS
+    private lateinit var gpsButton: Button
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
     private lateinit var rideTimeStart: TextView
     private lateinit var rideEndLocation: TextView
-    private lateinit var endRide: Button
+    lateinit var ride: Ride
+    lateinit var endRide: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             val id= it.getLong(ARG_BIKEID)
-            this.bike = getBikeById(id)
+            this.bike = bikeRealm.read(id)
             time = it.getString(ARG_TIME)
         }
-    }
-
-    private fun getBikeById(id: Long): Bike? {
-        val realm = Realm.getInstance(Main.getRealmConfig())
-        val bike = realm.where<Bike>().equalTo("id", id).findFirst()
-        return bike
     }
 
     override fun onCreateView(
@@ -61,8 +61,7 @@ class ActiveRideFragment : Fragment() {
         this.bikeLocation.text = this.bike?.location
         this.rideTimeStart.text = this.time
 
-        Toast.makeText(this.context!!, "Ride started!", Toast.LENGTH_LONG)
-            .show()
+        Toast.makeText(this.context!!, "Ride started", Toast.LENGTH_SHORT).show()
     }
 
     private fun initVariables(view: View) {
@@ -71,50 +70,47 @@ class ActiveRideFragment : Fragment() {
         this.rideTimeStart = view.findViewById(R.id.ride_time_start)
         this.endRide = view.findViewById(R.id.btn_end_ride)
         this.rideEndLocation = view.findViewById(R.id.ride_end_location)
+        this.gpsButton = view.findViewById(R.id.btn_gps)
+        this.gps = GPS(this.activity!!)
     }
 
     private fun setListeners() {
         this.endRide.setOnClickListener {
-            if (this.endLocationIsBlank()) {
-                this.noEndLocationWarning()
+            if (this.rideEndLocation.text.isBlank()) {
+                Toast.makeText(this.context!!, "invalid location!", Toast.LENGTH_SHORT).show()
             } else {
-                this.endActiveRide()
-                Main.replaceFragment(MainFragment(), fragmentManager!!)
+                this.rideEndLocation.clearFocus()
+                Main.hideKeyboard(this.context!!, this.view!!)
+
+                this.ride = this.rideRealm.newRide(
+                    this.bike!!,
+                    this.time!!,
+                    this.rideEndLocation.text.toString()
+                )
+
+                val dialog = PayDialog.newInstance(this.calculatePrice(this.ride))
+                dialog.setTargetFragment(this, 1)
+                dialog.show(fragmentManager, "Payment")
             }
         }
-    }
 
-    private fun endActiveRide() {
-        this.addRideToRealm(this.bike!!)
-        Main.makeToast(this.context!!, "Ride ended!")
-    }
-
-    private fun addRideToRealm(bike: Bike) {
-        val realm = Realm.getInstance(Main.getRealmConfig())
-        val last =  realm.where<Ride>().sort("id", Sort.DESCENDING).findFirst()
-        val index = last?.id ?: 0
-
-        realm.executeTransaction { realm ->
-            // Add a ride
-            val ride = realm.createObject<Ride>(index+1)
-            ride.bike = bike
-            ride.bikeName = bike.name
-            ride.location_start = bike.location
-            ride.location_end = this.rideEndLocation.text.toString()
-            ride.time_start = this.time
-            ride.time_end = Main.getDate()
-
-            // Update bike location
-            ride.bike!!.location = this.rideEndLocation.text.toString()
+        this.gpsButton.setOnClickListener {
+            this.gps.updateLocation()
+            this.rideEndLocation.text = this.gps.getAddress()!!.dropLast(9)
         }
     }
 
-    fun noEndLocationWarning() {
-        this.rideEndLocation.setHintTextColor(resources.getColor(R.color.error_color_material_light))
+    fun endActiveRide() {
+        this.rideRealm.create(this.ride)
+        this.bikeRealm.updateLocation(this.bike!!.id, this.ride.endLocation!!)
+        Toast.makeText(this.context!!, "Ride ended!", Toast.LENGTH_LONG).show()
     }
 
-    fun endLocationIsBlank(): Boolean {
-        return this.rideEndLocation.text.isBlank()
+    private fun calculatePrice(ride: Ride): Double {
+        val price = ride.bike!!.pricePerHour!!.toLong()
+        val time = Main.timeDifferenceInSeconds(ride.startTime, ride.endTime)
+        val hours = time/60/60
+        return  hours * price
     }
 
     companion object {

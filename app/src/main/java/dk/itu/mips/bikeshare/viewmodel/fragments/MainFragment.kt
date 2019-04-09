@@ -12,6 +12,7 @@ import dk.itu.mips.bikeshare.R
 class MainFragment : Fragment() {
 
     private lateinit var newRide: Button
+    private lateinit var wallet: Button
     private lateinit var rideHistory: Button
 
     override fun onCreateView(
@@ -30,6 +31,7 @@ class MainFragment : Fragment() {
     private fun initVariables(view: View) {
         this.newRide= view.findViewById(R.id.btn_new_ride)
         this.rideHistory = view.findViewById(R.id.btn_history_ride)
+        this.wallet = view.findViewById(R.id.btn_wallet)
     }
 
     private fun setListeners() {
@@ -38,6 +40,10 @@ class MainFragment : Fragment() {
         }
         this.rideHistory.setOnClickListener {
             Main.replaceFragment(RideHistoryFragment(), fragmentManager!!)
+        }
+
+        this.wallet.setOnClickListener {
+            Main.replaceFragment(WalletFragment(), fragmentManager!!)
         }
     }
 }
