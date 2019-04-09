@@ -4,12 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.*
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import java.util.*
+
 
 class GPS(val activity: Activity) : LocationListener {
 
@@ -36,11 +36,17 @@ class GPS(val activity: Activity) : LocationListener {
         return this.currentLocation
     }
 
-    fun getLocation(): Location {
-        while(this.lastLocation == this.currentLocation) {
-            updateLocation()
-        }
-        return this.currentLocation!!
+    fun getAddress(): String? {
+        val geocoder = Geocoder(this.activity, Locale.getDefault())
+        val addresses: List<Address>
+
+        addresses = geocoder.getFromLocation(
+            this.currentLocation!!.latitude,
+            this.currentLocation!!.longitude,
+            1
+        )
+
+        return addresses[0].getAddressLine(0)
     }
 
     override fun onLocationChanged(location: Location?) {

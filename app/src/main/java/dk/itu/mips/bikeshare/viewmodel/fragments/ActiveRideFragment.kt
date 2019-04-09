@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -91,7 +90,7 @@ class ActiveRideFragment : Fragment() {
 
         this.gpsButton.setOnClickListener {
             this.gps.updateLocation()
-            println("location lat: " + this.gps.getLocation().latitude)
+            this.rideEndLocation.text = this.gps.getAddress()!!.dropLast(9)
         }
     }
 

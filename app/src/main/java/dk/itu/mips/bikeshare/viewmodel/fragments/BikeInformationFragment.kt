@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -81,7 +82,7 @@ class BikeInformationFragment : Fragment() {
     private fun setButtonListeners() {
         this.startRideButton.setOnClickListener {
             Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!.id, Main.getDate()), fragmentManager!!)
-            Main.makeToast(this.context!!,"Ride Started!")
+            Main.makeToast(this.context!!,"Ride Started!", Toast.LENGTH_SHORT)
         }
     }
 
