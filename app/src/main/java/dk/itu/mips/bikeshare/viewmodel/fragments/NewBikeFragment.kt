@@ -13,8 +13,8 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.Util.BikeCamera
-import dk.itu.mips.bikeshare.viewmodel.Util.REQUEST_IMAGE_CAPTURE
+import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
+import dk.itu.mips.bikeshare.viewmodel.util.REQUEST_IMAGE_CAPTURE
 
 class NewBikeFragment : Fragment() {
 

@@ -3,6 +3,10 @@
           xmlns:tools="http://schemas.android.com/tools" package="dk.itu.mips.bikeshare">
     <uses-feature android:name="android.hardware.camera"
                   android:required="true" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
             android:name=".Main"
             android:allowBackup="true"

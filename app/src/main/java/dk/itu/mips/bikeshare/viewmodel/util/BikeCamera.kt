@@ -1,4 +1,4 @@
-package dk.itu.mips.bikeshare.viewmodel.Util
+package dk.itu.mips.bikeshare.viewmodel.util
 
 import android.app.Activity
 import android.content.Intent

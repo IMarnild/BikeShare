@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -14,6 +15,7 @@ import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.model.Ride
 import dk.itu.mips.bikeshare.model.RideRealm
 import dk.itu.mips.bikeshare.viewmodel.dialogs.PayDialog
+import dk.itu.mips.bikeshare.viewmodel.util.GPS
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,11 +28,13 @@ class ActiveRideFragment : Fragment() {
     private val rideRealm: RideRealm = RideRealm()
     private val bikeRealm: BikeRealm = BikeRealm()
 
+    private lateinit var gps: GPS
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
     private lateinit var rideTimeStart: TextView
     private lateinit var rideEndLocation: TextView
     private lateinit var endRide: Button
+    private lateinit var gpsButton: Button
     lateinit var ride: Ride
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +71,8 @@ class ActiveRideFragment : Fragment() {
         this.rideTimeStart = view.findViewById(R.id.ride_time_start)
         this.endRide = view.findViewById(R.id.btn_end_ride)
         this.rideEndLocation = view.findViewById(R.id.ride_end_location)
+        this.gpsButton = view.findViewById(R.id.btn_gps)
+        this.gps = GPS(this.activity!!)
     }
 
     private fun setListeners() {
@@ -81,6 +87,11 @@ class ActiveRideFragment : Fragment() {
                 dialog.setTargetFragment(this, 1)
                 dialog.show(fragmentManager, "Payment")
             }
+        }
+
+        this.gpsButton.setOnClickListener {
+            this.gps.updateLocation()
+            println("location lat: " + this.gps.getLocation().latitude)
         }
     }
 

@@ -12,7 +12,7 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.Util.BikeArrayAdapter
+import dk.itu.mips.bikeshare.viewmodel.util.BikeArrayAdapter
 
 class BikeSelectionFragment : Fragment() {
     private val bikeRealm: BikeRealm = BikeRealm()
