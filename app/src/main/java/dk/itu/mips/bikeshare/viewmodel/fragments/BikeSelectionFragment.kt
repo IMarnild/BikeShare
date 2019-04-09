@@ -1,7 +1,9 @@
 package dk.itu.mips.bikeshare.viewmodel.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -23,7 +25,8 @@ class BikeSelectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.viewManager = LinearLayoutManager(activity)
+        val orientation = getResources().getConfiguration().orientation
+        this.viewManager = if (orientation == Configuration.ORIENTATION_LANDSCAPE) GridLayoutManager(this.context, 2) else LinearLayoutManager(activity)
         this.viewAdapter = BikeArrayAdapter(this.bikeRealm.read()) { bike: Bike ->
             onListItemClicked(bike)
         }
@@ -31,7 +34,7 @@ class BikeSelectionFragment : Fragment() {
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_bikes)
             .apply {
                 setHasFixedSize(true)
-                layoutManager =viewManager
+                layoutManager = viewManager
                 adapter = viewAdapter
             }
 
@@ -47,6 +50,6 @@ class BikeSelectionFragment : Fragment() {
 
     private fun onListItemClicked(bike: Bike) {
         val bikeInfo = BikeInformationFragment.newInstance(bike.id)
-        Main.replaceFragment(bikeInfo,this.fragmentManager!!)
+        Main.replaceFragment(bikeInfo, this.fragmentManager!!)
     }
 }

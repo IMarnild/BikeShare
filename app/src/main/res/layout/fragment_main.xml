@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content" android:id="@+id/btn_history_ride"/>
 
         <Button
-                android:text="Wallet"
+                android:text="@string/btn_wallet"
                 android:layout_width="match_parent"
                 style="?android:attr/buttonBarButtonStyle"
                 android:background="@color/colorPrimaryLight"

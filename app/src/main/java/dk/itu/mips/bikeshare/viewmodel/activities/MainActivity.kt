@@ -1,7 +1,7 @@
 package dk.itu.mips.bikeshare.viewmodel.activities
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.FrameLayout
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.viewmodel.fragments.ActiveRideFragment
@@ -29,10 +29,9 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val fragments = supportFragmentManager.fragments
         fragments.map { f ->
-            if (f is ActiveRideFragment) {
-                f.endRide.callOnClick()
-            } else {
-                super.onBackPressed()
+            when (f) {
+                is ActiveRideFragment -> f.endRide.callOnClick()
+                else -> super.onBackPressed()
             }
         }
     }
