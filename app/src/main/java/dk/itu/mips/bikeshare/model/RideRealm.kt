@@ -38,6 +38,17 @@ class RideRealm() {
         }
     }
 
+    fun newRide(bike: Bike, startTime: String, location: String): Ride {
+        val ride = Ride()
+        ride.bike = bike
+        ride.bikeName = bike.name
+        ride.startLocation = bike.location
+        ride.endLocation = location
+        ride.startTime = startTime
+        ride.endTime = Main.getDate()
+        return ride
+    }
+
     private fun newRideIndex(realm: Realm) : Long {
         val latestRide = realm.where<Ride>().sort("id", Sort.DESCENDING).findFirst()
         val index = latestRide?.id ?: 0

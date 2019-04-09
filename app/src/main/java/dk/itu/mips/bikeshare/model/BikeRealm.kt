@@ -36,6 +36,13 @@ class BikeRealm {
         return bike.id
     }
 
+    fun updateLocation(id: Long, location: String) {
+        realm.executeTransaction {
+            val realmBike = realm.where<Bike>().equalTo("id", id).findFirst()
+            realmBike!!.location = location
+        }
+    }
+
     fun delete(bike: Bike) {
         this.realm.executeTransaction {
             val realmBike = realm.where<Bike>().equalTo("id", bike.id).findFirst()

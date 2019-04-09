@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -68,7 +69,7 @@ class EditBikeDialog : DialogFragment() {
             realmBike.pricePerHour = this.bikePrice.text.toString()
         }
 
-        Main.makeToast(this.parent.context!!, "Bike updated!")
+        Toast.makeText(this.parent.context!!, "Bike updated!", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

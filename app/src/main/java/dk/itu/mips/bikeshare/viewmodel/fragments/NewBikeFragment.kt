@@ -56,9 +56,9 @@ class NewBikeFragment : Fragment() {
                 val bike = this.createBike()
                 this.bikeRealm.create(bike)
                 Main.replaceFragment(BikeSelectionFragment(), this.fragmentManager!!)
-                Main.makeToast(this.context!!, "Bike added!")
+                Toast.makeText(this.context!!, "Bike added!", Toast.LENGTH_LONG).show()
             } else {
-                Main.makeToast(this.context!!, "Empty field!", Toast.LENGTH_SHORT)
+                Toast.makeText(this.context!!, "Empty field!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -68,7 +68,7 @@ class NewBikeFragment : Fragment() {
         bike.name = this.bikeName.text.toString()
         bike.location = this.bikeLocation.text.toString()
         bike.pricePerHour = this.bikePrice.text.toString()
-        if (this.photo != null) { bike.photo = Main.bitmapToByteArray(this.photo!!) }
+        if (this.photo != null) { bike.photo = BikeCamera.bitmapToByteArray(this.photo!!) }
         return bike
     }
 

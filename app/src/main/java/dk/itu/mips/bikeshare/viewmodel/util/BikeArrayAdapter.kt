@@ -45,7 +45,7 @@ class BikeArrayAdapter(private val myDataset: List<Any>, val listener: (Bike) ->
 
         holder.bike.text = bike.name
         holder.location.text = bike.location
-        holder.photo.setImageBitmap(Main.byteArrayToBitmap(bike.photo!!))
+        holder.photo.setImageBitmap(BikeCamera.byteArrayToBitmap(bike.photo!!))
         holder.setOnClickListener(bike, this.listener)
     }
 

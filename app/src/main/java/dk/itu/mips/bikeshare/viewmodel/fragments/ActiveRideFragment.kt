@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
@@ -15,8 +16,6 @@ import dk.itu.mips.bikeshare.model.Ride
 import dk.itu.mips.bikeshare.model.RideRealm
 import dk.itu.mips.bikeshare.viewmodel.dialogs.PayDialog
 import dk.itu.mips.bikeshare.viewmodel.util.GPS
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ActiveRideFragment : Fragment() {
 
@@ -28,13 +27,14 @@ class ActiveRideFragment : Fragment() {
     private val bikeRealm: BikeRealm = BikeRealm()
 
     private lateinit var gps: GPS
+    private lateinit var gpsButton: Button
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
     private lateinit var rideTimeStart: TextView
     private lateinit var rideEndLocation: TextView
-    private lateinit var endRide: Button
-    private lateinit var gpsButton: Button
     lateinit var ride: Ride
+    lateinit var endRide: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +61,7 @@ class ActiveRideFragment : Fragment() {
         this.bikeLocation.text = this.bike?.location
         this.rideTimeStart.text = this.time
 
-        Main.makeToast(this.context!!, "Ride started")
+        Toast.makeText(this.context!!, "Ride started", Toast.LENGTH_SHORT).show()
     }
 
     private fun initVariables(view: View) {
@@ -76,12 +76,18 @@ class ActiveRideFragment : Fragment() {
 
     private fun setListeners() {
         this.endRide.setOnClickListener {
-            if (this.endLocationIsBlank()) {
-                this.noEndLocationWarning()
+            if (this.rideEndLocation.text.isBlank()) {
+                Toast.makeText(this.context!!, "invalid location!", Toast.LENGTH_SHORT).show()
             } else {
                 this.rideEndLocation.clearFocus()
                 Main.hideKeyboard(this.context!!, this.view!!)
-                this.ride = this.createRide(this.bike!!)
+
+                this.ride = this.rideRealm.newRide(
+                    this.bike!!,
+                    this.time!!,
+                    this.rideEndLocation.text.toString()
+                )
+
                 val dialog = PayDialog.newInstance(this.calculatePrice(this.ride))
                 dialog.setTargetFragment(this, 1)
                 dialog.show(fragmentManager, "Payment")
@@ -96,52 +102,15 @@ class ActiveRideFragment : Fragment() {
 
     fun endActiveRide() {
         this.rideRealm.create(this.ride)
-        this.updateBikeLocation(this.bike!!, this.ride.endLocation!!)
-        Main.makeToast(this.context!!, "Ride ended!")
-    }
-
-    private fun updateBikeLocation(bike: Bike, location: String): Bike {
-        val temp = Bike()
-        temp.id = bike.id
-        temp.name = bike.name
-        temp.location = location
-        temp.available = bike.available
-        temp.pricePerHour = bike.pricePerHour
-        temp.photo = bike.photo
-        this.bikeRealm.update(temp)
-        return temp
-    }
-
-    private fun createRide(bike: Bike): Ride {
-        val ride = Ride()
-        ride.bike = bike
-        ride.bikeName = bike.name
-        ride.startLocation = bike.location
-        ride.endLocation = this.rideEndLocation.text.toString()
-        ride.startTime = this.time
-        ride.endTime = Main.getDate()
-        return ride
-    }
-
-    private fun timeDifferenceInSeconds(start: String?, end: String?): Double {
-        val time = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(start)
-        val time2 = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(end)
-        return (time2.time - time.time).toDouble()/1000
+        this.bikeRealm.updateLocation(this.bike!!.id, this.ride.endLocation!!)
+        Toast.makeText(this.context!!, "Ride ended!", Toast.LENGTH_LONG).show()
     }
 
     private fun calculatePrice(ride: Ride): Double {
         val price = ride.bike!!.pricePerHour!!.toLong()
-        val time = this.timeDifferenceInSeconds(ride.startTime, ride.endTime)
+        val time = Main.timeDifferenceInSeconds(ride.startTime, ride.endTime)
         val hours = time/60/60
         return  hours * price
-    }
-
-    fun noEndLocationWarning() {
-        this.rideEndLocation.setHintTextColor(resources.getColor(R.color.colorError))
-    }
-
-    fun endLocationIsBlank(): Boolean {
-        return this.rideEndLocation.text.isBlank()
     }
 
     companion object {

@@ -72,7 +72,7 @@ class BikeInformationFragment : Fragment() {
 
     fun updatePhotoView() {
         if (this.bike!!.photo != null) {
-            val bitmap = Main.byteArrayToBitmap(this.bike!!.photo!!)
+            val bitmap = BikeCamera.byteArrayToBitmap(this.bike!!.photo!!)
             this.bikePhoto.setImageBitmap(BikeCamera.getScaledBitmap(bitmap, this.activity!!))
         } else {
             this.bikePhoto.setImageDrawable(null)
@@ -82,7 +82,7 @@ class BikeInformationFragment : Fragment() {
     private fun setButtonListeners() {
         this.startRideButton.setOnClickListener {
             Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!.id, Main.getDate()), fragmentManager!!)
-            Main.makeToast(this.context!!,"Ride Started!", Toast.LENGTH_SHORT)
+            Toast.makeText(this.context!!,"Ride Started!", Toast.LENGTH_SHORT).show()
         }
     }
 

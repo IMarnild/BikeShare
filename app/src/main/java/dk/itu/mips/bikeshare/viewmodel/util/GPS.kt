@@ -10,7 +10,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import java.util.*
 
-
 class GPS(val activity: Activity) : LocationListener {
 
     var locationManager: LocationManager? = this.activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
@@ -37,10 +36,10 @@ class GPS(val activity: Activity) : LocationListener {
     }
 
     fun getAddress(): String? {
-        val geocoder = Geocoder(this.activity, Locale.getDefault())
+        val geoCoder = Geocoder(this.activity, Locale.getDefault())
         val addresses: List<Address>
 
-        addresses = geocoder.getFromLocation(
+        addresses = geoCoder.getFromLocation(
             this.currentLocation!!.latitude,
             this.currentLocation!!.longitude,
             1

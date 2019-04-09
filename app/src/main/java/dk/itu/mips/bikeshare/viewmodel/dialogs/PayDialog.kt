@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.model.Ride
 import dk.itu.mips.bikeshare.model.Wallet
 import dk.itu.mips.bikeshare.viewmodel.fragments.ActiveRideFragment
 import dk.itu.mips.bikeshare.viewmodel.fragments.MainFragment

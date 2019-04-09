@@ -3,19 +3,13 @@ package dk.itu.mips.bikeshare
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.getSystemService
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import dk.itu.mips.bikeshare.model.Wallet
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,7 +26,7 @@ class Main : Application() {
         realm.executeTransaction { r ->
             val wallet = Wallet()
             wallet.id = 1
-            wallet.money = 500.0
+            wallet.money = 100.0
             r.insertOrUpdate(wallet)
         }
     }
@@ -56,29 +50,15 @@ class Main : Application() {
             return simpleDateFormat.format(date)
         }
 
-        fun makeToast(context: Context, message: String) {
-            Toast.makeText(context, message, Toast.LENGTH_LONG)
-                .show()
-        }
-
-        fun makeToast(context: Context, message: String, length: Int) {
-            Toast.makeText(context, message, length)
-                .show()
-        }
-
-        fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            return stream.toByteArray()
-        }
-
-        fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
-            return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-        }
-
         fun hideKeyboard(context: Context, view: View) {
             val inputMethodManager: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        fun timeDifferenceInSeconds(start: String?, end: String?): Double {
+            val time = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(start)
+            val time2 = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(end)
+            return (time2.time - time.time).toDouble()/1000
         }
     }
 }
