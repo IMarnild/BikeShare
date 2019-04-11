@@ -15,6 +15,7 @@
     <string name="label_bike_id">"ID: "</string>
     <string name="label_bike_price">"Price/hour: "</string>
     <string name="label_bike_list">Select a bike</string>
+    <string name="label_bike_photo">"Bike photo "</string>
 
 
     <string name="btn_start_ride">Start Ride!</string>

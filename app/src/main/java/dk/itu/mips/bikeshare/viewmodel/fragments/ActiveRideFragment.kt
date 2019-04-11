@@ -35,7 +35,6 @@ class ActiveRideFragment : Fragment() {
     lateinit var ride: Ride
     lateinit var endRide: Button
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -60,6 +59,7 @@ class ActiveRideFragment : Fragment() {
         this.bikeName.text = this.bike?.name
         this.bikeLocation.text = this.bike?.location
         this.rideTimeStart.text = this.time
+        this.gps.requestLocationUpdates()
 
         Toast.makeText(this.context!!, "Ride started", Toast.LENGTH_SHORT).show()
     }
@@ -95,7 +95,7 @@ class ActiveRideFragment : Fragment() {
         }
 
         this.gpsButton.setOnClickListener {
-            this.gps.updateLocation()
+            this.gps.requestLocationUpdates()
             this.rideEndLocation.text = this.gps.getAddress()!!.dropLast(9)
         }
     }

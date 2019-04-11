@@ -16,14 +16,14 @@ class GPS(val activity: Activity) : LocationListener {
     var lastLocation: Location? = null
     var currentLocation: Location? = null
 
-    fun updateLocation(): Location? {
+    fun requestLocationUpdates(): Location? {
         if (ContextCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         } else {
             try {
-                locationManager!!.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null)
+                locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5f, this)
                 val location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                 this.lastLocation = this.currentLocation
                 this.currentLocation = location

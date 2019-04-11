@@ -8,15 +8,22 @@
 
     <TextView
             android:id="@+id/ride_date"
+            android:hint="19/20/2019 11:11:11"
             android:layout_width="0dp"
             android:layout_weight=".4"
             android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/bike_name"
+        android:hint="hello world!"
         android:layout_width="0dp"
-        android:layout_weight=".6"
+        android:layout_weight=".3"
         android:layout_height="wrap_content" />
 
-
+    <TextView
+            android:id="@+id/ride_cost"
+            android:hint="1000 Dkk."
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content" />
 </LinearLayout>

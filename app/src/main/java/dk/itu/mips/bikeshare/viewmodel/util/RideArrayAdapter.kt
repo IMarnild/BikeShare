@@ -19,6 +19,7 @@ class RideArrayAdapter(private val myDataset: List<Any>, val listener: (Ride) ->
 
         var bike: TextView = itemView.findViewById(R.id.bike_name)
         var date: TextView = itemView.findViewById(R.id.ride_date)
+        var cost: TextView = itemView.findViewById(R.id.ride_cost)
 
         fun setOnClickListener(ride: Ride, listener: (Ride) -> Unit) {
             itemView.setOnClickListener {
@@ -42,6 +43,7 @@ class RideArrayAdapter(private val myDataset: List<Any>, val listener: (Ride) ->
 
         holder.bike.text = ride.bikeName
         holder.date.text = ride.startTime
+        holder.cost.text = String.format("%.2f", ride.cost).plus(" Dkk.")
         holder.setOnClickListener(ride, this.listener)
     }
 
