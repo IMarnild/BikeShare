@@ -3,6 +3,8 @@ package dk.itu.mips.bikeshare
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.View
@@ -70,6 +72,11 @@ class Main : Application() {
             val time = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(start)
             val time2 = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMAN).parse(end)
             return (time2.time - time.time).toDouble()/1000
+        }
+
+        fun isViewHorizontal(resources: Resources): Boolean {
+            val orientation = resources.configuration.orientation
+            return orientation == Configuration.ORIENTATION_LANDSCAPE
         }
     }
 }

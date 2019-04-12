@@ -1,6 +1,5 @@
 package dk.itu.mips.bikeshare.viewmodel.fragments
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -25,8 +24,7 @@ class BikeSelectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val orientation = resources.configuration.orientation
-        this.viewManager = if (orientation == Configuration.ORIENTATION_LANDSCAPE) GridLayoutManager(this.context, 2) else LinearLayoutManager(activity)
+        this.viewManager = if (Main.isViewHorizontal(resources)) GridLayoutManager(this.context, 2) else LinearLayoutManager(activity)
         this.viewAdapter = BikeArrayAdapter(this.bikeRealm.read()) { bike: Bike ->
             onListItemClicked(bike)
         }

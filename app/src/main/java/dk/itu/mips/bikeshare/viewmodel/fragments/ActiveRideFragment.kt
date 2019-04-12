@@ -56,6 +56,7 @@ class ActiveRideFragment : Fragment() {
         this.initVariables(view)
         this.setListeners()
 
+        this.bikeRealm.toggleAvailability(this.bike!!)
         this.bikeName.text = this.bike?.name
         this.bikeLocation.text = this.bike?.location
         this.rideTimeStart.text = this.time
@@ -107,7 +108,7 @@ class ActiveRideFragment : Fragment() {
     }
 
     private fun calculatePrice(ride: Ride): Double {
-        val price = ride.bike!!.pricePerHour!!.toLong()
+        val price = ride.bike!!.pricePerHour.toLong()
         val time = Main.timeDifferenceInSeconds(ride.startTime, ride.endTime)
         val hours = time/60/60
         return  hours * price

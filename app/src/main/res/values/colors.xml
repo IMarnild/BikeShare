@@ -4,6 +4,7 @@
     <color name="colorPrimaryLight">#304E64</color>
     <color name="colorSecondary">#FFAD4C</color>
     <color name="colorBackground">#BBBBBB</color>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colorError">#FF0000</color>
     <color name="colorAvailable">#0BAA00</color>
     <color name="colorUnavailable">#AA0000</color>

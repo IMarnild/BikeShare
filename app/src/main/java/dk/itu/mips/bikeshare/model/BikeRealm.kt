@@ -50,6 +50,13 @@ class BikeRealm {
         }
     }
 
+    fun toggleAvailability(bike: Bike) {
+        this.realm.executeTransaction {
+            val realmBike = realm.where<Bike>().equalTo("id", bike.id).findFirst()
+            realmBike!!.available = !realmBike.available
+        }
+    }
+
     private fun newBikeIndex(realm: Realm) : Long {
         val latestBike = realm.where<Bike>().sort("id", Sort.DESCENDING).findFirst()
         val index = latestBike?.id ?: 0
