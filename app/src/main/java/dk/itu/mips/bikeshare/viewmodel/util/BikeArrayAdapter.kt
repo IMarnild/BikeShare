@@ -48,7 +48,7 @@ class BikeArrayAdapter(private val myDataset: List<Any>, val listener: (Bike) ->
 
         holder.bike.text = bike.name
         holder.location.text = bike.location
-        holder.price.text = bike.pricePerHour + " Dkk/hour"
+        holder.price.text = bike.pricePerHour.toString() + " Dkk/hour"
         if (bike.available) {
             holder.available.text = "available"
             holder.available.setTextColor(Color.GREEN)

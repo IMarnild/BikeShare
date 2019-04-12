@@ -66,7 +66,7 @@ class EditBikeDialog : DialogFragment() {
         realm.executeTransaction {
             realmBike!!.name = this.bikeName.text.toString()
             realmBike.location = this.bikeLocation.text.toString()
-            realmBike.pricePerHour = this.bikePrice.text.toString()
+            realmBike.pricePerHour = this.bikePrice.text.toString().toDouble()
         }
 
         Toast.makeText(this.parent.context!!, "Bike updated!", Toast.LENGTH_SHORT).show()

@@ -42,7 +42,7 @@ class RideArrayAdapter(private val myDataset: List<Any>, val listener: (Ride) ->
         val ride = myDataset[position] as Ride
 
         holder.bike.text = ride.bikeName
-        holder.date.text = ride.startTime
+        holder.date.text = ride.startTime!!.drop(8)
         holder.cost.text = String.format("%.2f", ride.cost).plus(" Dkk.")
         holder.setOnClickListener(ride, this.listener)
     }

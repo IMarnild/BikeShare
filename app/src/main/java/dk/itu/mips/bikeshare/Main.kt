@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import dk.itu.mips.bikeshare.model.BikeRealm
+import dk.itu.mips.bikeshare.model.DummyRealm
 import dk.itu.mips.bikeshare.model.Wallet
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -19,6 +21,7 @@ class Main : Application() {
         super.onCreate()
         Realm.init(this)
         this.initWallet()
+        this.initDummies()
     }
 
     private fun initWallet() {
@@ -28,6 +31,14 @@ class Main : Application() {
             wallet.id = 1
             wallet.money = 100.0
             r.insertOrUpdate(wallet)
+        }
+    }
+
+    private fun initDummies() {
+        val realm = BikeRealm()
+        if (realm.read().isEmpty()) {
+            val dummyRealm = DummyRealm(this.resources)
+            dummyRealm.load()
         }
     }
 

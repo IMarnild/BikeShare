@@ -4,11 +4,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
         android:weightSum="1">
 
     <TextView
             android:id="@+id/ride_date"
-            android:hint="19/20/2019 11:11:11"
+            android:hint="12/04/2019"
+            android:textSize="18sp"
             android:layout_width="0dp"
             android:layout_weight=".4"
             android:layout_height="wrap_content"/>
@@ -16,6 +18,7 @@
     <TextView
         android:id="@+id/bike_name"
         android:hint="hello world!"
+        android:textSize="18sp"
         android:layout_width="0dp"
         android:layout_weight=".3"
         android:layout_height="wrap_content" />
@@ -23,6 +26,7 @@
     <TextView
             android:id="@+id/ride_cost"
             android:hint="1000 Dkk."
+            android:textSize="18sp"
             android:layout_width="0dp"
             android:layout_weight=".3"
             android:layout_height="wrap_content" />

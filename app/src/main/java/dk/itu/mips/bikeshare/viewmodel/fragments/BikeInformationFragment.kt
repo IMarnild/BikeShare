@@ -65,7 +65,7 @@ class BikeInformationFragment : Fragment() {
             this.bikeName.text = bike.name
             this.bikeLocation.text = bike.location
             this.bikeAvailable.text = bike.available.toString()
-            val price = bike.pricePerHour + " DKK."
+            val price = bike.pricePerHour.toString() + " DKK."
             this.bikePrice.text = price
         }
     }

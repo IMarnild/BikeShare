@@ -10,7 +10,7 @@ open class Bike (
     var id: Long = 0,
     var name: String? = null,
     var location: String? = null,
-    var pricePerHour: String? = null,
+    var pricePerHour: Double = 0.0,
     var photo: ByteArray? = ByteArray(0),
     var available: Boolean = true
 ) : RealmObject()

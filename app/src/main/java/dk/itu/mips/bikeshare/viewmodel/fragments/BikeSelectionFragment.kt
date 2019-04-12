@@ -25,7 +25,7 @@ class BikeSelectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val orientation = getResources().getConfiguration().orientation
+        val orientation = resources.configuration.orientation
         this.viewManager = if (orientation == Configuration.ORIENTATION_LANDSCAPE) GridLayoutManager(this.context, 2) else LinearLayoutManager(activity)
         this.viewAdapter = BikeArrayAdapter(this.bikeRealm.read()) { bike: Bike ->
             onListItemClicked(bike)

@@ -67,7 +67,7 @@ class NewBikeFragment : Fragment() {
         val bike = Bike()
         bike.name = this.bikeName.text.toString()
         bike.location = this.bikeLocation.text.toString()
-        bike.pricePerHour = this.bikePrice.text.toString()
+        bike.pricePerHour = this.bikePrice.text.toString().toDouble()
         if (this.photo != null) { bike.photo = BikeCamera.bitmapToByteArray(this.photo!!) }
         return bike
     }
