@@ -1,8 +1,11 @@
 package dk.itu.mips.bikeshare.viewmodel.fragments
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +15,7 @@ import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
-import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
+import dk.itu.mips.bikeshare.viewmodel.util.REQUEST_IMAGE_CAPTURE
 
 
 private const val ARG_BIKEID = "bike"
@@ -26,11 +28,13 @@ class BikeEditFragment : Fragment() {
     private lateinit var bikeAvailable: CheckBox
     private lateinit var bikePrice: TextView
     private lateinit var bikePhoto: ImageView
-    private var photo: Bitmap? = null
     private lateinit var saveButton: Button
     private lateinit var deleteButton: Button
+    private lateinit var photoButton: ImageButton
 
     private val realm = BikeRealm()
+    private var photo: Bitmap? = null
+    private lateinit var camera: BikeCamera
     private lateinit var bike: Bike
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +62,8 @@ class BikeEditFragment : Fragment() {
         this.bikePhoto = view.findViewById(R.id.bike_photo)
         this.saveButton = view.findViewById(R.id.btn_save)
         this.deleteButton = view.findViewById(R.id.btn_delete)
+        this.photoButton = view.findViewById(R.id.btn_camera)
+        this.camera = BikeCamera(this)
 
     }
 
@@ -77,6 +83,8 @@ class BikeEditFragment : Fragment() {
         this.deleteButton.setOnClickListener {
             this.showDeleteDialog()
         }
+
+        this.photoButton = this.camera.attachCamera(this.photoButton)
     }
 
     private fun showDeleteDialog() {
@@ -128,9 +136,15 @@ class BikeEditFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_bike_edit, container, false)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            this.photo =  data.extras?.get("data") as Bitmap
+            this.bikePhoto.setImageBitmap(this.photo)
+        }
     }
 
     companion object {

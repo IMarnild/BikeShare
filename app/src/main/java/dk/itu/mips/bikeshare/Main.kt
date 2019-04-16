@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.model.DummyRealm
 import dk.itu.mips.bikeshare.model.Wallet
+import dk.itu.mips.bikeshare.viewmodel.util.GPS
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.text.SimpleDateFormat

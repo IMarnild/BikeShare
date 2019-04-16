@@ -61,7 +61,6 @@ class ActiveRideFragment : Fragment() {
         this.bikeName.text = this.bike?.name
         this.bikeLocation.text = this.bike?.location
         this.rideTimeStart.text = this.time
-        this.gps.requestLocationUpdates()
 
         Toast.makeText(this.context!!, "Ride started", Toast.LENGTH_SHORT).show()
     }
