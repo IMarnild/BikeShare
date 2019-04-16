@@ -4,6 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
               android:orientation="vertical"
+              android:padding="10dp"
              tools:context=".viewmodel.fragments.ActiveRideFragment">
 
     <TextView
@@ -103,28 +104,38 @@
             android:text="@string/label_location_end"
     />
 
-    <EditText
-            android:id="@+id/ride_end_location"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackground"
-            android:hint="@string/hint_end_ride"
-            android:layout_marginBottom="16dp"
-    />
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+        <EditText
+                android:id="@+id/ride_end_location"
+                android:layout_width="0dp"
+                android:layout_weight=".9"
+                android:layout_height="wrap_content"
+                android:text="Kongen Nytorv 16, 2500 København"
+                android:textSize="20sp"
+                android:background="@color/colorBackground"
+                android:hint="@string/hint_end_ride"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+        />
+
+        <ImageButton
+                android:src="@android:drawable/ic_menu_mylocation"
+                android:layout_width="0dp"
+                android:layout_weight=".1"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryLight"
+                android:id="@+id/btn_gps"/>
+
+    </LinearLayout>
 
     <Button
             android:id="@+id/btn_end_ride"
             android:text="@string/btn_end_ride"
-            android:layout_width="match_parent"
-            style="?android:attr/buttonBarButtonStyle"
-            android:background="@color/colorPrimaryLight"
-            android:layout_height="wrap_content"/>
-
-
-    <Button
-            android:id="@+id/btn_gps"
-            android:layout_margin="10dp"
-            android:text="GPS"
             android:layout_width="match_parent"
             style="?android:attr/buttonBarButtonStyle"
             android:background="@color/colorPrimaryLight"

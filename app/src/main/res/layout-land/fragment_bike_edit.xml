@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:padding="16dp"
@@ -25,26 +25,23 @@
                     android:background="@color/colorBackground"
                     android:id="@+id/bike_photo"/>
 
-            <Button
-                    android:text="@string/btn_edit"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="130dp"
-                    android:layout_width="fill_parent"
+            <ImageButton
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:background="@color/colorPrimaryLight"
-                    android:textColor="@color/colorSecondary"
-                    android:id="@+id/btn_edit"
-                    android:layout_height="35dp"
-            />
+                    android:id="@+id/btn_camera"/>
         </LinearLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             <TextView
                     android:text="@string/label_bike_id"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -56,7 +53,7 @@
 
             <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:layout_marginBottom="8dp"
                     android:hint=" Hello world"
                     android:layout_height="wrap_content" android:id="@+id/bike_id"/>
@@ -73,9 +70,9 @@
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="16sp"
+            <EditText
+                    android:layout_width="match_parent"
+                    android:textSize="14sp"
                     android:layout_marginBottom="8dp"
                     android:hint="Hello world!"
                     android:layout_height="wrap_content" android:id="@+id/bike_name"/>
@@ -93,9 +90,10 @@
                     android:background="@android:color/darker_gray"/>
 
 
-            <TextView
+            <EditText
                     android:layout_width="match_parent"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
+                    android:inputType="textShortMessage"
                     android:hint="Hello world!"
                     android:layout_marginBottom="8dp"
                     android:layout_height="wrap_content" android:id="@+id/bike_available"/>
@@ -112,10 +110,11 @@
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
+            <EditText
+                    android:layout_width="match_parent"
                     android:hint="hello world"
-                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:textSize="14sp"
                     android:layout_marginBottom="8dp"
                     android:layout_height="wrap_content" android:id="@+id/bike_price"/>
 
@@ -131,20 +130,37 @@
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"/>
 
-            <TextView
+            <EditText
                     android:layout_width="match_parent"
-                    android:textSize="16sp"
-                    android:hint="Kongens Nytorv 16, 1050 København"
-                    android:layout_marginBottom="8dp"
+                    android:textSize="14sp"
+                    android:hint="Hello wold!"
                     android:layout_height="wrap_content" android:id="@+id/bike_location"/>
 
-            <Button
-                    android:text="@string/btn_start_ride"
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="300dp"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:background="@color/colorPrimaryLight" android:id="@+id/btn_start_ride"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+            >
+                <Button
+                        android:text="@string/btn_delete"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:background="@color/colorUnavailable"
+                        android:id="@+id/btn_delete"
+                        android:layout_width="100dp"
+                        android:layout_height="35dp"/>
+
+                <Button
+                        android:text="@string/btn_save"
+                        android:textAllCaps="true"
+                        android:background="@color/colorPrimaryLight"
+                        android:textColor="@color/colorSecondary"
+                        android:id="@+id/btn_save"
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="100dp"
+                        android:layout_height="35dp"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
