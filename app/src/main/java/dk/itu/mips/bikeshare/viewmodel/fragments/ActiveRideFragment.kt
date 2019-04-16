@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
@@ -27,7 +28,7 @@ class ActiveRideFragment : Fragment() {
     private val bikeRealm: BikeRealm = BikeRealm()
 
     private lateinit var gps: GPS
-    private lateinit var gpsButton: Button
+    private lateinit var gpsButton: ImageButton
     private lateinit var bikeName: TextView
     private lateinit var bikeLocation: TextView
     private lateinit var rideTimeStart: TextView
