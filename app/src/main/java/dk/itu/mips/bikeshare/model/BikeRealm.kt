@@ -43,9 +43,9 @@ class BikeRealm {
         }
     }
 
-    fun delete(bike: Bike) {
+    fun delete(id: Long) {
         this.realm.executeTransaction {
-            val realmBike = realm.where<Bike>().equalTo("id", bike.id).findFirst()
+            val realmBike = realm.where<Bike>().equalTo("id", id).findFirst()
             realmBike!!.deleteFromRealm()
         }
     }

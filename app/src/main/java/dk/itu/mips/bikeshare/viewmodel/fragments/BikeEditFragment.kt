@@ -12,6 +12,9 @@ import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
+import android.content.DialogInterface
+import android.support.v7.app.AlertDialog
+
 
 private const val ARG_BIKEID = "bike"
 
@@ -66,8 +69,28 @@ class BikeEditFragment : Fragment() {
                 this.realm.update(bike)
                 Main.replaceFragment(BikeSelectionFragment(), fragmentManager!!)
                 Toast.makeText(this.context, "Changes saved!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this.context, "Empty fields!", Toast.LENGTH_SHORT).show()
             }
         }
+
+        this.deleteButton.setOnClickListener {
+            this.showDeleteDialog()
+        }
+    }
+
+    private fun showDeleteDialog() {
+        AlertDialog.Builder(this.context!!)
+            .setTitle("Delete entry")
+            .setMessage("Are you sure you want to delete this entry?")
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                this.realm.delete(this.bike.id)
+                Main.replaceFragment(BikeSelectionFragment(), fragmentManager!!)
+                Toast.makeText(this.context, "Bike deleted!", Toast.LENGTH_LONG).show()
+            }
+            .setNegativeButton(android.R.string.no, null)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     private fun createBikeFromFields(): Bike? {
