@@ -23,7 +23,7 @@ class DummyRealm(val ressources: Resources) {
         val dummies = LinkedList<Bike>()
 
         dummies.add( newDummyBike("BikeOne", "Arne Jacobsens Allé 12, 2300 København", 15.0, true))
-        dummies.add( newDummyBike("BikeTwo", "Rued Langgaards Vej 7, 2300 København", 35.0, true))
+        dummies.add( newDummyBike("BikeTwo", "Rued Langgaards Vej 7, 2300 København", 35.0, false))
         dummies.add( newDummyBike("BikeThree", "Gothersgade 19, 1123 København", 10.0, true))
 
         return dummies
