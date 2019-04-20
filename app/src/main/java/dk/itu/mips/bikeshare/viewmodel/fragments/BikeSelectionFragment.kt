@@ -1,5 +1,6 @@
 package dk.itu.mips.bikeshare.viewmodel.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -13,6 +14,7 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
+import dk.itu.mips.bikeshare.viewmodel.activities.NewBikeActivity
 import dk.itu.mips.bikeshare.viewmodel.util.BikeArrayAdapter
 
 class BikeSelectionFragment : Fragment() {
@@ -38,7 +40,7 @@ class BikeSelectionFragment : Fragment() {
 
         this.newBikeButton = view.findViewById(R.id.btn_add_new_bike)
         this.newBikeButton.setOnClickListener {
-            Main.replaceFragment(NewBikeFragment(), fragmentManager!!)
+            this.startActivity(Intent(this.context, NewBikeActivity::class.java))
         }
     }
 

@@ -1,27 +1,27 @@
-package dk.itu.mips.bikeshare.viewmodel.fragments
+package dk.itu.mips.bikeshare.viewmodel.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
+import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
-import dk.itu.mips.bikeshare.model.Bike
-import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.model.Ride
-import dk.itu.mips.bikeshare.model.RideRealm
-import dk.itu.mips.bikeshare.viewmodel.dialogs.PayDialog
+import dk.itu.mips.bikeshare.model.*
 import dk.itu.mips.bikeshare.viewmodel.util.GPS
+import io.realm.Realm
+import io.realm.kotlin.where
+import org.jetbrains.anko.contentView
 
-class ActiveRideFragment : Fragment() {
+const val ARG_ACTIVE_BIKE_ID = "bikeId"
+const val ARG_RIDE_START = "rideStart"
 
-    private val ARG_BIKEID = "bike"
-    private val ARG_TIME = "time"
+class ActiveRideActivity : AppCompatActivity() {
+
     private var bike: Bike? = null
     private var time: String? = null
     private val rideRealm: RideRealm = RideRealm()
@@ -38,31 +38,20 @@ class ActiveRideFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            val id= it.getLong(ARG_BIKEID)
-            this.bike = bikeRealm.read(id)
-            time = it.getString(ARG_TIME)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_active_ride, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        this.initVariables(view)
+        setContentView(R.layout.activity_active_ride)
+        this.initVariables(this.contentView!!)
         this.setListeners()
+        this.time = intent.getStringExtra(ARG_RIDE_START)
+        val id = intent.getLongExtra(ARG_ACTIVE_BIKE_ID, 0)
+        this.bike = bikeRealm.read(id)
+
 
         this.bikeRealm.toggleAvailability(this.bike!!)
         this.bikeName.text = this.bike?.name
         this.bikeLocation.text = this.bike?.location
         this.rideTimeStart.text = this.time
 
-        Toast.makeText(this.context!!, "Ride started", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Ride started", Toast.LENGTH_SHORT).show()
     }
 
     private fun initVariables(view: View) {
@@ -72,16 +61,16 @@ class ActiveRideFragment : Fragment() {
         this.endRide = view.findViewById(R.id.btn_end_ride)
         this.rideEndLocation = view.findViewById(R.id.ride_end_location)
         this.gpsButton = view.findViewById(R.id.btn_gps)
-        this.gps = GPS(this.activity!!)
+        this.gps = GPS(this)
     }
 
     private fun setListeners() {
         this.endRide.setOnClickListener {
             if (this.rideEndLocation.text.isBlank()) {
-                Toast.makeText(this.context!!, "invalid location!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "invalid location!", Toast.LENGTH_SHORT).show()
             } else {
                 this.rideEndLocation.clearFocus()
-                Main.hideKeyboard(this.context!!, this.view!!)
+                Main.hideKeyboard(this, this.contentView!!)
 
                 this.ride = this.rideRealm.newRide(
                     this.bike!!,
@@ -89,9 +78,7 @@ class ActiveRideFragment : Fragment() {
                     this.rideEndLocation.text.toString()
                 )
 
-                val dialog = PayDialog.newInstance(this.calculatePrice(this.ride))
-                dialog.setTargetFragment(this, 1)
-                dialog.show(fragmentManager, "Payment")
+                this.showPayDialog()
             }
         }
 
@@ -101,11 +88,38 @@ class ActiveRideFragment : Fragment() {
         }
     }
 
+    private fun showPayDialog() {
+        val cost = this.calculatePrice(this.ride)
+        AlertDialog.Builder(this)
+            .setTitle("Receipt")
+            .setMessage("Total cost: " + String.format("%.2f", cost) + " DKK.")
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                this.ride.cost = cost
+                this.withdrawMoney(cost)
+                this.endActiveRide()
+            }
+            .setNegativeButton(android.R.string.no, null)
+            .setIcon(android.R.drawable.ic_dialog_info)
+            .show()
+    }
+
     fun endActiveRide() {
         this.rideRealm.create(this.ride)
         this.bikeRealm.updateLocation(this.bike!!.id, this.ride.endLocation!!)
         this.bikeRealm.toggleAvailability(this.bike!!)
-        Toast.makeText(this.context!!, "Ride ended!", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Ride ended!", Toast.LENGTH_LONG).show()
+        this.startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    private fun withdrawMoney(amount: Double): Double {
+        val realm = Realm.getInstance(Main.getRealmConfig())
+        var status = 0.0
+        realm.executeTransaction {
+            val wallet = realm.where<Wallet>().findFirst()
+            wallet!!.money = wallet.money - amount
+            status = wallet.money
+        }
+        return status
     }
 
     private fun calculatePrice(ride: Ride): Double {
@@ -115,14 +129,8 @@ class ActiveRideFragment : Fragment() {
         return  hours * price
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(bikeId: Long, time: String) =
-            ActiveRideFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(ARG_BIKEID, bikeId)
-                    putString(ARG_TIME, time)
-                }
-            }
+
+    override fun onBackPressed() {
+        this.endRide.performClick()
     }
 }

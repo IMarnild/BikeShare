@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.model.DummyRealm
 import dk.itu.mips.bikeshare.model.Wallet
-import dk.itu.mips.bikeshare.viewmodel.util.GPS
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.text.SimpleDateFormat
@@ -32,7 +31,6 @@ class Main : Application() {
         realm.executeTransaction { r ->
             val wallet = Wallet()
             wallet.id = 1
-            wallet.money = 100.0
             r.insertOrUpdate(wallet)
         }
     }

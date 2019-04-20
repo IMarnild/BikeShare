@@ -26,6 +26,7 @@
     <TextView
             android:id="@+id/ride_cost"
             android:hint="1000 Dkk."
+            android:gravity="right"
             android:textSize="18sp"
             android:layout_width="0dp"
             android:layout_weight=".3"

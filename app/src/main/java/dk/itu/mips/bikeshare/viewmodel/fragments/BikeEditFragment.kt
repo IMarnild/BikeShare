@@ -130,7 +130,7 @@ class BikeEditFragment : Fragment() {
     private fun updatePhotoView() {
         if (this.bike.photo != null) {
             val bitmap = BikeCamera.byteArrayToBitmap(this.bike.photo!!)
-            this.bikePhoto.setImageBitmap(BikeCamera.getScaledBitmap(bitmap, this.activity!!))
+            this.bikePhoto.setImageBitmap(BikeCamera.getScaledBitmap(bitmap, this.bikePhoto))
         } else {
             this.bikePhoto.setImageDrawable(null)
         }

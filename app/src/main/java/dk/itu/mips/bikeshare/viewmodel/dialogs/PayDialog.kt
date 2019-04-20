@@ -46,6 +46,7 @@ class PayDialog : DialogFragment() {
                 this.parent.ride.cost = this.price
                 this.parent.endActiveRide()
                 this.withdrawMoney(this.price)
+
                 Main.replaceFragment(MainFragment(), fragmentManager!!)
             }
             builder.create()

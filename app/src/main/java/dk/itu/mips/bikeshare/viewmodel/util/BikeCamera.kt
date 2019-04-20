@@ -1,11 +1,12 @@
 package dk.itu.mips.bikeshare.viewmodel.util
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.widget.ImageButton
+import android.widget.ImageView
 import java.io.ByteArrayOutputStream
 
 const val REQUEST_IMAGE_CAPTURE = 1
@@ -26,12 +27,8 @@ class BikeCamera(private val parent: Fragment) {
     }
 
     companion object {
-        fun getScaledBitmap(bitmap: Bitmap, activity: Activity): Bitmap {
-            val size = Point()
-            activity.windowManager.defaultDisplay
-                .getSize(size)
-
-            return Bitmap.createScaledBitmap(bitmap, size.x/2, size.y/3, false)
+        fun getScaledBitmap(bitmap: Bitmap, imageView: ImageView): Bitmap {
+            return Bitmap.createScaledBitmap(bitmap, imageView.layoutParams.width, imageView.layoutParams.height, false)
         }
 
         fun bitmapToByteArray(bitmap: Bitmap): ByteArray {

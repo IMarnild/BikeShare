@@ -1,5 +1,7 @@
 package dk.itu.mips.bikeshare.viewmodel.fragments
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +15,9 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
+import dk.itu.mips.bikeshare.viewmodel.activities.ARG_ACTIVE_BIKE_ID
+import dk.itu.mips.bikeshare.viewmodel.activities.ARG_RIDE_START
+import dk.itu.mips.bikeshare.viewmodel.activities.ActiveRideActivity
 import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
 
 class BikeInformationFragment : Fragment() {
@@ -47,7 +52,6 @@ class BikeInformationFragment : Fragment() {
         this.updateInfo(this.bike)
         this.setButtonListeners()
         if (!this.bike!!.available) this.startRideButton.visibility = View.GONE
-        this.updatePhotoView()
     }
 
     private fun initVariables(view: View) {
@@ -69,22 +73,27 @@ class BikeInformationFragment : Fragment() {
             this.bikeAvailable.text = bike.available.toString()
             val price = bike.pricePerHour.toString() + " DKK."
             this.bikePrice.text = price
+            updatePhotoView()
         }
     }
 
-    fun updatePhotoView() {
-        if (this.bike!!.photo != null) {
+    private fun updatePhotoView() {
+       if (this.bike!!.photo != null) {
             val bitmap = BikeCamera.byteArrayToBitmap(this.bike!!.photo!!)
-            this.bikePhoto.setImageBitmap(BikeCamera.getScaledBitmap(bitmap, this.activity!!))
-        } else {
+            this.bikePhoto.setImageBitmap(Bitmap.createScaledBitmap(bitmap, this.bikePhoto.layoutParams.width, this.bikePhoto.layoutParams.height, false))
+       } else {
             this.bikePhoto.setImageDrawable(null)
-        }
+       }
     }
 
     private fun setButtonListeners() {
         this.startRideButton.setOnClickListener {
-            Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!.id, Main.getDate()), fragmentManager!!)
-            Toast.makeText(this.context!!,"Ride Started!", Toast.LENGTH_SHORT).show()
+            //Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!.id, Main.getDate()), fragmentManager!!)
+
+            val intent = Intent(this.context, ActiveRideActivity::class.java)
+            intent.putExtra(ARG_ACTIVE_BIKE_ID, this.bike!!.id)
+            intent.putExtra(ARG_RIDE_START, Main.getDate())
+            this.startActivity(intent)
         }
 
         this.editBikeButton.setOnClickListener {
