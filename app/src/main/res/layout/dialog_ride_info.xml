@@ -4,99 +4,105 @@
               android:layout_height="wrap_content"
               android:padding="15dp">
 
-    <LinearLayout
+    <TextView
+            android:text="@string/label_bike_name"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
-        <TextView
-                android:text="@string/label_bike_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <TextView
-                android:id="@+id/bike_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+            android:id="@+id/bike_name"
+            android:hint="Hello world"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"/>
 
-        <TextView
-                android:text="Start location: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+    <TextView
+            android:text="Start location: "
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
-        <TextView
-            android:id="@+id/ride_location_start"
+    <TextView
+        android:id="@+id/ride_location_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"/>
+
+    <TextView
+            android:text="End location: "
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/ride_location_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"/>
+
+    <TextView
+            android:text="Time start: "
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/ride_time_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"/>
+
+    <TextView
+            android:text="Time end: "
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/ride_time_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"/>
+
+    <TextView
+            android:text="Total cost: "
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    <TextView
+            android:id="@+id/ride_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:text="End location: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/ride_location_end"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:text="Time start: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/ride_time_start"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:text="Time end: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/ride_time_end"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:text="Total cost: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <TextView
-                android:id="@+id/ride_cost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="sans-serif"/>
-    </LinearLayout>
 </LinearLayout>

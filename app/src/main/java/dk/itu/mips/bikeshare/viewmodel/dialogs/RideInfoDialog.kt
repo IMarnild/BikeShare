@@ -48,6 +48,7 @@ class RideInfoDialog : DialogFragment() {
 
             this.initVariables(layout)
             this.setVariables()
+            builder.setPositiveButton("Close") { _, _ -> }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

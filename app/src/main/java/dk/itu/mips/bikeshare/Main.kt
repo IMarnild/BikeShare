@@ -14,6 +14,8 @@ import dk.itu.mips.bikeshare.model.DummyRealm
 import dk.itu.mips.bikeshare.model.Wallet
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.kotlin.createObject
+import io.realm.kotlin.where
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,11 +30,8 @@ class Main : Application() {
 
     private fun initWallet() {
         val realm = Realm.getInstance(Main.getRealmConfig())
-        realm.executeTransaction { r ->
-            val wallet = Wallet()
-            wallet.id = 1
-            r.insertOrUpdate(wallet)
-        }
+        val wallet = realm.where<Wallet>().findFirst()
+        if (wallet == null) realm.createObject<Wallet>(1)
     }
 
     private fun initDummies() {
