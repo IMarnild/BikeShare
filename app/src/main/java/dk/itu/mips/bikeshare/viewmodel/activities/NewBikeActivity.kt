@@ -8,11 +8,11 @@ import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
+import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.REQUEST_IMAGE_CAPTURE
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
-import dk.itu.mips.bikeshare.viewmodel.util.REQUEST_IMAGE_CAPTURE
 import org.jetbrains.anko.contentView
 
 class NewBikeActivity : AppCompatActivity() {
@@ -74,7 +74,7 @@ class NewBikeActivity : AppCompatActivity() {
         bike.name = this.bikeName.text.toString()
         bike.location = this.bikeLocation.text.toString()
         bike.pricePerHour = this.bikePrice.text.toString().toDouble()
-        if (this.photo != null) { bike.photo = BikeCamera.bitmapToByteArray(this.photo!!) }
+        if (this.photo != null) { bike.photo = Main.bitmapToByteArray(this.photo!!) }
         return bike
     }
 

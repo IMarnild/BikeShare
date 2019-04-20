@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import dk.itu.mips.bikeshare.ARG_ACTIVE_BIKE_ID
+import dk.itu.mips.bikeshare.ARG_RIDE_START
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.*
@@ -16,9 +18,6 @@ import dk.itu.mips.bikeshare.viewmodel.util.GPS
 import io.realm.Realm
 import io.realm.kotlin.where
 import org.jetbrains.anko.contentView
-
-const val ARG_ACTIVE_BIKE_ID = "bikeId"
-const val ARG_RIDE_START = "rideStart"
 
 class ActiveRideActivity : AppCompatActivity() {
 

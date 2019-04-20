@@ -2,8 +2,8 @@ package dk.itu.mips.bikeshare.model
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory
+import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
-import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
 import java.util.*
 
 class DummyRealm(val ressources: Resources) {
@@ -15,7 +15,7 @@ class DummyRealm(val ressources: Resources) {
         dummy.pricePerHour = price
         dummy.available = available
         val logo = BitmapFactory.decodeResource(ressources, R.mipmap.smallbike)
-        dummy.photo = BikeCamera.bitmapToByteArray(logo)
+        dummy.photo = Main.bitmapToByteArray(logo)
         return dummy
     }
 

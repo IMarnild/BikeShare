@@ -4,21 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import dk.itu.mips.bikeshare.ARG_BIKEID
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.REQUEST_IMAGE_CAPTURE
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
-import dk.itu.mips.bikeshare.viewmodel.util.REQUEST_IMAGE_CAPTURE
-
-
-private const val ARG_BIKEID = "bike"
 
 class BikeEditFragment : Fragment() {
 
@@ -34,7 +32,6 @@ class BikeEditFragment : Fragment() {
 
     private val realm = BikeRealm()
     private var photo: Bitmap? = null
-    private lateinit var camera: BikeCamera
     private lateinit var bike: Bike
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,8 +60,6 @@ class BikeEditFragment : Fragment() {
         this.saveButton = view.findViewById(R.id.btn_save)
         this.deleteButton = view.findViewById(R.id.btn_delete)
         this.photoButton = view.findViewById(R.id.btn_camera)
-        this.camera = BikeCamera(this)
-
     }
 
     private fun setListeners() {
@@ -84,7 +79,13 @@ class BikeEditFragment : Fragment() {
             this.showDeleteDialog()
         }
 
-        this.photoButton = this.camera.attachCamera(this.photoButton)
+        this.photoButton.setOnClickListener {
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(this.activity!!.packageManager)?.also {
+                    this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
+        }
     }
 
     private fun showDeleteDialog() {
@@ -109,7 +110,7 @@ class BikeEditFragment : Fragment() {
         bike.location = this.bikeLocation.text.toString()
         bike.pricePerHour = this.bikePrice.text.toString().toDouble()
         bike.available = this.bikeAvailable.isChecked
-        bike.photo = BikeCamera.bitmapToByteArray(this.photo!!)
+        bike.photo = Main.bitmapToByteArray(this.photo!!)
         return bike
     }
 
@@ -124,13 +125,13 @@ class BikeEditFragment : Fragment() {
             this.bikeAvailable.isChecked = bike.available
             val price = bike.pricePerHour.toString()
             this.bikePrice.text = price
-            this.photo = BikeCamera.byteArrayToBitmap(bike.photo!!)
+            this.photo = Main.byteArrayToBitmap(bike.photo!!)
     }
 
     private fun updatePhotoView() {
         if (this.bike.photo != null) {
-            val bitmap = BikeCamera.byteArrayToBitmap(this.bike.photo!!)
-            this.bikePhoto.setImageBitmap(BikeCamera.getScaledBitmap(bitmap, this.bikePhoto))
+            val bitmap = Main.byteArrayToBitmap(this.bike.photo!!)
+            this.bikePhoto.setImageBitmap(Main.getScaledBitmap(bitmap, this.bikePhoto))
         } else {
             this.bikePhoto.setImageDrawable(null)
         }

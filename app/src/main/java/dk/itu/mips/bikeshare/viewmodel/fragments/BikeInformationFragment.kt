@@ -10,15 +10,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.viewmodel.activities.ARG_ACTIVE_BIKE_ID
-import dk.itu.mips.bikeshare.viewmodel.activities.ARG_RIDE_START
+import dk.itu.mips.bikeshare.ARG_ACTIVE_BIKE_ID
+import dk.itu.mips.bikeshare.ARG_RIDE_START
 import dk.itu.mips.bikeshare.viewmodel.activities.ActiveRideActivity
-import dk.itu.mips.bikeshare.viewmodel.util.BikeCamera
 
 class BikeInformationFragment : Fragment() {
     private val ARG_BIKE_ID = "bike"
@@ -79,7 +77,7 @@ class BikeInformationFragment : Fragment() {
 
     private fun updatePhotoView() {
        if (this.bike!!.photo != null) {
-            val bitmap = BikeCamera.byteArrayToBitmap(this.bike!!.photo!!)
+            val bitmap = Main.byteArrayToBitmap(this.bike!!.photo!!)
             this.bikePhoto.setImageBitmap(Bitmap.createScaledBitmap(bitmap, this.bikePhoto.layoutParams.width, this.bikePhoto.layoutParams.height, false))
        } else {
             this.bikePhoto.setImageDrawable(null)

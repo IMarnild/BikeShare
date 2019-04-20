@@ -56,7 +56,7 @@ class BikeArrayAdapter(private val myDataset: List<Any>, val listener: (Bike) ->
             holder.available.text = "unavailable"
             holder.available.setTextColor(Color.RED)
         }
-        holder.photo.setImageBitmap(BikeCamera.byteArrayToBitmap(bike.photo!!))
+        holder.photo.setImageBitmap(Main.byteArrayToBitmap(bike.photo!!))
         holder.setOnClickListener(bike, this.listener)
     }
 

@@ -5,10 +5,13 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.model.DummyRealm
 import dk.itu.mips.bikeshare.model.Wallet
@@ -16,8 +19,15 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+
+const val ARG_ACTIVE_BIKE_ID = "bikeId"
+const val ARG_RIDE_START = "rideStart"
+const val ARG_BIKEID = "bike"
+const val REQUEST_IMAGE_CAPTURE = 3
+
 
 class Main : Application() {
 
@@ -75,6 +85,20 @@ class Main : Application() {
         fun isViewHorizontal(resources: Resources): Boolean {
             val orientation = resources.configuration.orientation
             return orientation == Configuration.ORIENTATION_LANDSCAPE
+        }
+
+        fun getScaledBitmap(bitmap: Bitmap, imageView: ImageView): Bitmap {
+            return Bitmap.createScaledBitmap(bitmap, imageView.layoutParams.width, imageView.layoutParams.height, false)
+        }
+
+        fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            return stream.toByteArray()
+        }
+
+        fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
+            return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         }
     }
 }
