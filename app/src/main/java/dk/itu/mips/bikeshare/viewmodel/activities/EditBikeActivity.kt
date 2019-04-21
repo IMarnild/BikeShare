@@ -1,11 +1,16 @@
 package dk.itu.mips.bikeshare.viewmodel.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.*
@@ -13,6 +18,9 @@ import dk.itu.mips.bikeshare.*
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import org.jetbrains.anko.contentView
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditBikeActivity : AppCompatActivity() {
 
@@ -28,6 +36,7 @@ class EditBikeActivity : AppCompatActivity() {
 
     private val realm = BikeRealm()
     private var photo: Bitmap? = null
+    private var imagePath: String? = null
     private lateinit var bike: Bike
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,10 +86,20 @@ class EditBikeActivity : AppCompatActivity() {
         this.photoButton.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.resolveActivity(this.packageManager)?.also {
-                    this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    this.createImageFile(this).also {
+                        val uri: Uri = FileProvider.getUriForFile(this, "dk.itu.mips.bikeshare.fileprovider", it)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                        this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
                 }
             }
         }
+    }
+
+    private fun createImageFile(context: Context): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply { imagePath = absolutePath }
     }
 
     private fun showDeleteDialog() {
@@ -137,7 +156,8 @@ class EditBikeActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            this.photo =  data!!.extras?.get("data") as Bitmap
+            val bitmap = BitmapFactory.decodeFile(this.imagePath)
+            this.photo = Bitmap.createScaledBitmap(bitmap, this.bikePhoto.layoutParams.width, this.bikePhoto.layoutParams.height, false)
             this.updatePhotoView()
         }
     }

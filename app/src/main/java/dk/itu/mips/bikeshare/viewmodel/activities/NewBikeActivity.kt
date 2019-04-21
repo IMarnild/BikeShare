@@ -1,10 +1,15 @@
 package dk.itu.mips.bikeshare.viewmodel.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
@@ -16,6 +21,9 @@ import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.viewmodel.util.GPS
 import org.jetbrains.anko.contentView
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NewBikeActivity : AppCompatActivity() {
 
@@ -27,6 +35,7 @@ class NewBikeActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var gps: GPS
     private lateinit var gpsButton: ImageButton
+    private var imagePath: String? = null
     private var photo: Bitmap? = null
 
     private val bikeRealm: BikeRealm = BikeRealm()
@@ -53,11 +62,21 @@ class NewBikeActivity : AppCompatActivity() {
         this.gps = GPS(this)
     }
 
+    private fun createImageFile(context: Context): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply { imagePath = absolutePath }
+    }
+
     private fun setButtonListeners() {
         this.cameraButton.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.resolveActivity(this.packageManager)?.also {
-                    this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    this.createImageFile(this).also {
+                        val uri: Uri = FileProvider.getUriForFile(this, "dk.itu.mips.bikeshare.fileprovider", it)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                        this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
                 }
             }
         }
@@ -95,7 +114,7 @@ class NewBikeActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val bitmap =  data!!.extras?.get("data") as Bitmap
+            val bitmap = BitmapFactory.decodeFile(this.imagePath)
             this.photo = Bitmap.createScaledBitmap(bitmap, this.imageView.width, this.imageView.height, false)
             this.imageView.setImageBitmap(this.photo)
         }

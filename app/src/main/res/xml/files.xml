@@ -1,3 +1,3 @@
-<paths>
-    <files-path name="bike_photos" path="."/>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="my_images" path="Android/data/dk.itu.mips.bikeshare/files/Pictures" />
 </paths>
