@@ -8,11 +8,13 @@ import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
+import dk.itu.mips.bikeshare.ARG_PHOTO
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.REQUEST_IMAGE_CAPTURE
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
+import dk.itu.mips.bikeshare.viewmodel.util.GPS
 import org.jetbrains.anko.contentView
 
 class NewBikeActivity : AppCompatActivity() {
@@ -23,8 +25,9 @@ class NewBikeActivity : AppCompatActivity() {
     private lateinit var cameraButton: ImageButton
     private lateinit var addBikeButton: Button
     private lateinit var imageView: ImageView
+    private lateinit var gps: GPS
+    private lateinit var gpsButton: ImageButton
     private var photo: Bitmap? = null
-    private val ARG_PHOTO = "photo"
 
     private val bikeRealm: BikeRealm = BikeRealm()
 
@@ -46,6 +49,8 @@ class NewBikeActivity : AppCompatActivity() {
         this.cameraButton = view.findViewById(R.id.btn_camera)
         this.imageView = view.findViewById(R.id.bike_photo)
         this.addBikeButton = view.findViewById(R.id.btn_add_new_bike)
+        this.gpsButton = view.findViewById(R.id.btn_gps)
+        this.gps = GPS(this)
     }
 
     private fun setButtonListeners() {
@@ -66,6 +71,11 @@ class NewBikeActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Empty field!", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        this.gpsButton.setOnClickListener {
+            this.gps.requestLocationUpdates()
+            this.bikeLocation.text = this.gps.getAddress()!!.dropLast(9)
         }
     }
 

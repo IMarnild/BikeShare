@@ -26,6 +26,7 @@ import java.util.*
 const val ARG_ACTIVE_BIKE_ID = "bikeId"
 const val ARG_RIDE_START = "rideStart"
 const val ARG_BIKEID = "bike"
+const val ARG_PHOTO = "photo"
 const val REQUEST_IMAGE_CAPTURE = 3
 
 

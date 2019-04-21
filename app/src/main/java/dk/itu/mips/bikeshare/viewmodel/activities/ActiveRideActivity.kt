@@ -21,6 +21,7 @@ import org.jetbrains.anko.contentView
 
 class ActiveRideActivity : AppCompatActivity() {
 
+    private var active = true
     private var bike: Bike? = null
     private var time: String? = null
     private val rideRealm: RideRealm = RideRealm()
@@ -93,9 +94,10 @@ class ActiveRideActivity : AppCompatActivity() {
             .setTitle("Receipt")
             .setMessage("Total cost: " + String.format("%.2f", cost) + " DKK.")
             .setPositiveButton(android.R.string.yes) { _, _ ->
-                this.ride.cost = cost
-                this.withdrawMoney(cost)
                 this.endActiveRide()
+                this.active = false
+                Toast.makeText(this, "Ride ended!", Toast.LENGTH_LONG).show()
+                this.startActivity(Intent(this, MainActivity::class.java))
             }
             .setNegativeButton(android.R.string.no, null)
             .setIcon(android.R.drawable.ic_dialog_info)
@@ -103,11 +105,12 @@ class ActiveRideActivity : AppCompatActivity() {
     }
 
     fun endActiveRide() {
+        val cost = this.calculatePrice(this.ride)
+        this.ride.cost = cost
+        this.withdrawMoney(cost)
         this.rideRealm.create(this.ride)
         this.bikeRealm.updateLocation(this.bike!!.id, this.ride.endLocation!!)
         this.bikeRealm.toggleAvailability(this.bike!!)
-        Toast.makeText(this, "Ride ended!", Toast.LENGTH_LONG).show()
-        this.startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun withdrawMoney(amount: Double): Double {
@@ -128,8 +131,12 @@ class ActiveRideActivity : AppCompatActivity() {
         return  hours * price
     }
 
-
     override fun onBackPressed() {
         this.endRide.performClick()
+    }
+
+    override fun onStop() {
+        if (this.active) this.endActiveRide()
+        super.onStop()
     }
 }

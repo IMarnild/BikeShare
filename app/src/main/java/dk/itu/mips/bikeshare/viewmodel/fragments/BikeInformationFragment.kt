@@ -10,18 +10,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import dk.itu.mips.bikeshare.Main
-import dk.itu.mips.bikeshare.R
+import dk.itu.mips.bikeshare.*
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import dk.itu.mips.bikeshare.ARG_ACTIVE_BIKE_ID
-import dk.itu.mips.bikeshare.ARG_RIDE_START
 import dk.itu.mips.bikeshare.viewmodel.activities.ActiveRideActivity
+import dk.itu.mips.bikeshare.viewmodel.activities.EditBikeActivity
 
 class BikeInformationFragment : Fragment() {
-    private val ARG_BIKE_ID = "bike"
     private val bikeRealm: BikeRealm = BikeRealm()
-    private var bike: Bike? = null
+    private var id: Long = -1L
+    private lateinit var bike: Bike
 
     private lateinit var bikeId: TextView
     private lateinit var bikeName: TextView
@@ -35,8 +33,7 @@ class BikeInformationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            val id = it.getLong(ARG_BIKE_ID)
-            this.bike = bikeRealm.read(id)
+            this.id = it.getLong(ARG_BIKEID, -1L)
         }
     }
 
@@ -47,9 +44,14 @@ class BikeInformationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.initVariables(view)
-        this.updateInfo(this.bike)
+        this.updateInfo()
         this.setButtonListeners()
-        if (!this.bike!!.available) this.startRideButton.visibility = View.GONE
+        if (this.id != -1L && !this.bike.available) this.startRideButton.visibility = View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        this.updateInfo()
     }
 
     private fun initVariables(view: View) {
@@ -63,21 +65,22 @@ class BikeInformationFragment : Fragment() {
         this.editBikeButton = view.findViewById(R.id.btn_edit)
     }
 
-    private fun updateInfo(bike: Bike?) {
-        if (bike != null) {
-            this.bikeId.text = bike.id.toString()
-            this.bikeName.text = bike.name
-            this.bikeLocation.text = bike.location
-            this.bikeAvailable.text = bike.available.toString()
-            val price = bike.pricePerHour.toString() + " DKK."
+    private fun updateInfo() {
+        if (this.id != -1L) {
+            this.bike = bikeRealm.read(this.id)!!
+            this.bikeId.text = this.bike.id.toString()
+            this.bikeName.text = this.bike.name
+            this.bikeLocation.text = this.bike.location
+            this.bikeAvailable.text = this.bike.available.toString()
+            val price = this.bike.pricePerHour.toString() + " DKK."
             this.bikePrice.text = price
             updatePhotoView()
         }
     }
 
     private fun updatePhotoView() {
-       if (this.bike!!.photo != null) {
-            val bitmap = Main.byteArrayToBitmap(this.bike!!.photo!!)
+       if (this.bike.photo != null) {
+            val bitmap = Main.byteArrayToBitmap(this.bike.photo!!)
             this.bikePhoto.setImageBitmap(Bitmap.createScaledBitmap(bitmap, this.bikePhoto.layoutParams.width, this.bikePhoto.layoutParams.height, false))
        } else {
             this.bikePhoto.setImageDrawable(null)
@@ -86,16 +89,16 @@ class BikeInformationFragment : Fragment() {
 
     private fun setButtonListeners() {
         this.startRideButton.setOnClickListener {
-            //Main.replaceFragment(ActiveRideFragment.newInstance(this.bike!!.id, Main.getDate()), fragmentManager!!)
-
             val intent = Intent(this.context, ActiveRideActivity::class.java)
-            intent.putExtra(ARG_ACTIVE_BIKE_ID, this.bike!!.id)
+            intent.putExtra(ARG_ACTIVE_BIKE_ID, this.bike.id)
             intent.putExtra(ARG_RIDE_START, Main.getDate())
             this.startActivity(intent)
         }
 
         this.editBikeButton.setOnClickListener {
-            Main.replaceFragment(BikeEditFragment.newInstance(this.bike!!.id), fragmentManager!!)
+            val intent = Intent(this.context, EditBikeActivity::class.java)
+            intent.putExtra(ARG_BIKEID, this.bike.id)
+            this.startActivity(intent)
         }
     }
 
@@ -104,7 +107,7 @@ class BikeInformationFragment : Fragment() {
         fun newInstance(bikeId: Long) =
             BikeInformationFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(ARG_BIKE_ID, bikeId)
+                    putLong(ARG_BIKEID, bikeId)
                 }
             }
     }

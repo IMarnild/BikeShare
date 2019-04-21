@@ -1,24 +1,20 @@
-package dk.itu.mips.bikeshare.viewmodel.fragments
+package dk.itu.mips.bikeshare.viewmodel.activities
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import dk.itu.mips.bikeshare.ARG_BIKEID
-import dk.itu.mips.bikeshare.Main
-import dk.itu.mips.bikeshare.R
-import dk.itu.mips.bikeshare.REQUEST_IMAGE_CAPTURE
+import dk.itu.mips.bikeshare.*
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
+import org.jetbrains.anko.contentView
 
-class BikeEditFragment : Fragment() {
+class EditBikeActivity : AppCompatActivity() {
 
     private lateinit var bikeId: TextView
     private lateinit var bikeName: TextView
@@ -36,18 +32,17 @@ class BikeEditFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            val id = it.getLong(ARG_BIKEID)
-            this.bike = this.realm.read(id)!!
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        this.initVariables(view)
-        this.updateInfo(this.bike)
-        this.updatePhotoView()
+        setContentView(R.layout.activity_edit_bike)
+        this.initVariables(this.contentView!!)
         this.setListeners()
+        val id = intent.getLongExtra(ARG_BIKEID, 0)
+        this.bike = realm.read(id)!!
+
+        this.updateInfo(this.bike)
+        if (savedInstanceState != null) {
+            this.photo = savedInstanceState.getParcelable(ARG_PHOTO) as Bitmap
+        }
+        this.updatePhotoView()
     }
 
     private fun initVariables(view: View) {
@@ -68,10 +63,10 @@ class BikeEditFragment : Fragment() {
             val bike = createBikeFromFields()
             if(bike != null) {
                 this.realm.update(bike)
-                Main.replaceFragment(BikeSelectionFragment(), fragmentManager!!)
-                Toast.makeText(this.context, "Changes saved!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Changes saved!", Toast.LENGTH_SHORT).show()
+                onBackPressed()
             } else {
-                Toast.makeText(this.context, "Empty fields!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Empty fields!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -81,7 +76,7 @@ class BikeEditFragment : Fragment() {
 
         this.photoButton.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                takePictureIntent.resolveActivity(this.activity!!.packageManager)?.also {
+                takePictureIntent.resolveActivity(this.packageManager)?.also {
                     this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
             }
@@ -89,13 +84,13 @@ class BikeEditFragment : Fragment() {
     }
 
     private fun showDeleteDialog() {
-        AlertDialog.Builder(this.context!!)
+        AlertDialog.Builder(this)
             .setTitle("Delete entry")
             .setMessage("Are you sure you want to delete this entry?")
             .setPositiveButton(android.R.string.yes) { _, _ ->
                 this.realm.delete(this.bike.id)
-                Main.replaceFragment(BikeSelectionFragment(), fragmentManager!!)
-                Toast.makeText(this.context, "Bike deleted!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Bike deleted!", Toast.LENGTH_LONG).show()
+                this.startActivity(Intent(this, MainActivity::class.java))
             }
             .setNegativeButton(android.R.string.no, null)
             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -119,42 +114,36 @@ class BikeEditFragment : Fragment() {
     }
 
     private fun updateInfo(bike: Bike) {
-            this.bikeId.text = bike.id.toString()
-            this.bikeName.text = bike.name
-            this.bikeLocation.text = bike.location
-            this.bikeAvailable.isChecked = bike.available
-            val price = bike.pricePerHour.toString()
-            this.bikePrice.text = price
-            this.photo = Main.byteArrayToBitmap(bike.photo!!)
+        this.bikeId.text = bike.id.toString()
+        this.bikeName.text = bike.name
+        this.bikeLocation.text = bike.location
+        this.bikeAvailable.isChecked = bike.available
+        val price = bike.pricePerHour.toString()
+        this.bikePrice.text = price
+        this.photo = Main.byteArrayToBitmap(bike.photo!!)
     }
 
     private fun updatePhotoView() {
-        if (this.bike.photo != null) {
-            val bitmap = Main.byteArrayToBitmap(this.bike.photo!!)
-            this.bikePhoto.setImageBitmap(Main.getScaledBitmap(bitmap, this.bikePhoto))
-        } else {
-            this.bikePhoto.setImageDrawable(null)
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_bike_edit, container, false)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            this.photo =  data.extras?.get("data") as Bitmap
-            this.bikePhoto.setImageBitmap(this.photo)
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(bikeId: Long) =
-            BikeEditFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(ARG_BIKEID, bikeId)
-                }
+        when {
+            this.photo != null -> this.bikePhoto.setImageBitmap(Main.getScaledBitmap(this.photo!!, this.bikePhoto))
+            this.bike.photo != null -> {
+                val bitmap = Main.byteArrayToBitmap(this.bike.photo!!)
+                this.bikePhoto.setImageBitmap(Main.getScaledBitmap(bitmap, this.bikePhoto))
             }
+            else -> this.bikePhoto.setImageDrawable(null)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            this.photo =  data!!.extras?.get("data") as Bitmap
+            this.updatePhotoView()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState!!.putParcelable(ARG_PHOTO, this.photo)
     }
 }

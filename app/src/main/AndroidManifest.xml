@@ -19,6 +19,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".viewmodel.activities.EditBikeActivity">
+        </activity>
         <activity android:name=".viewmodel.activities.ActiveRideActivity">
         </activity>
         <activity android:name=".viewmodel.activities.NewBikeActivity">
