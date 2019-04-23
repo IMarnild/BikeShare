@@ -6,33 +6,22 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
-import android.view.View
-import android.widget.*
+import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import dk.itu.mips.bikeshare.*
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
-import org.jetbrains.anko.contentView
+import kotlinx.android.synthetic.main.activity_edit_bike.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 class EditBikeActivity : AppCompatActivity() {
-
-    private lateinit var bikeId: TextView
-    private lateinit var bikeName: TextView
-    private lateinit var bikeLocation: TextView
-    private lateinit var bikeAvailable: CheckBox
-    private lateinit var bikePrice: TextView
-    private lateinit var bikePhoto: ImageView
-    private lateinit var saveButton: Button
-    private lateinit var deleteButton: Button
-    private lateinit var photoButton: ImageButton
 
     private val realm = BikeRealm()
     private var photo: Bitmap? = null
@@ -42,33 +31,19 @@ class EditBikeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_bike)
-        this.initVariables(this.contentView!!)
         this.setListeners()
         val id = intent.getLongExtra(ARG_BIKEID, 0)
         this.bike = realm.read(id)!!
 
         this.updateInfo(this.bike)
         if (savedInstanceState != null) {
-            this.photo = savedInstanceState.getParcelable(ARG_PHOTO) as Bitmap
+            this.photo = savedInstanceState.getParcelable(ARG_PHOTO) as Bitmap?
         }
         this.updatePhotoView()
     }
 
-    private fun initVariables(view: View) {
-        this.bikeId = view.findViewById(R.id.bike_id)
-        this.bikeName = view.findViewById(R.id.bike_name)
-        this.bikeLocation = view.findViewById(R.id.bike_location)
-        this.bikeAvailable = view.findViewById(R.id.bike_available)
-        this.bikePrice = view.findViewById(R.id.bike_price)
-        this.bikePhoto = view.findViewById(R.id.bike_photo)
-        this.saveButton = view.findViewById(R.id.btn_save)
-        this.deleteButton = view.findViewById(R.id.btn_delete)
-        this.photoButton = view.findViewById(R.id.btn_camera)
-    }
-
     private fun setListeners() {
-        this.saveButton.setOnClickListener {
-            println("Hello Save button")
+        this.btn_save.setOnClickListener {
             val bike = createBikeFromFields()
             if(bike != null) {
                 this.realm.update(bike)
@@ -79,11 +54,11 @@ class EditBikeActivity : AppCompatActivity() {
             }
         }
 
-        this.deleteButton.setOnClickListener {
+        this.btn_delete.setOnClickListener {
             this.showDeleteDialog()
         }
 
-        this.photoButton.setOnClickListener {
+        this.btn_camera.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.resolveActivity(this.packageManager)?.also {
                     this.createImageFile(this).also {
@@ -97,7 +72,7 @@ class EditBikeActivity : AppCompatActivity() {
     }
 
     private fun createImageFile(context: Context): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.GERMAN).format(Date())
         val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
         return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply { imagePath = absolutePath }
     }
@@ -119,46 +94,46 @@ class EditBikeActivity : AppCompatActivity() {
     private fun createBikeFromFields(): Bike? {
         if(isAnyFieldBlank()) return null
         val bike = Bike()
-        bike.id = this.bikeId.text.toString().toLong()
-        bike.name = this.bikeName.text.toString()
-        bike.location = this.bikeLocation.text.toString()
-        bike.pricePerHour = this.bikePrice.text.toString().toDouble()
-        bike.available = this.bikeAvailable.isChecked
-        bike.photo = Main.bitmapToByteArray(this.photo!!)
+        bike.id = this.bike_id.text.toString().toLong()
+        bike.name = this.bike_name.text.toString()
+        bike.location = this.bike_location.text.toString()
+        bike.pricePerHour = this.bike_price.text.toString().toDouble()
+        bike.available = this.bike_available.isChecked
+        bike.photo = if (this.photo != null) Main.bitmapToByteArray(this.photo!!) else this.bike.photo
         return bike
     }
 
     private fun isAnyFieldBlank(): Boolean {
-        return bikeName.text.isBlank() || bikeLocation.text.isBlank() || bikePrice.text.isBlank() || photo == null
+        return bike_name.text.isBlank() || bike_location.text.isBlank() || bike_price.text.isBlank()
     }
 
     private fun updateInfo(bike: Bike) {
-        this.bikeId.text = bike.id.toString()
-        this.bikeName.text = bike.name
-        this.bikeLocation.text = bike.location
-        this.bikeAvailable.isChecked = bike.available
+        this.bike_id.text = bike.id.toString()
+        this.bike_name.setText(bike.name)
+        this.bike_location.setText(bike.location)
+        this.bike_available.isChecked = bike.available
         val price = bike.pricePerHour.toString()
-        this.bikePrice.text = price
-        this.photo = Main.byteArrayToBitmap(bike.photo!!)
+        this.bike_price.setText(price)
     }
 
     private fun updatePhotoView() {
         when {
-            this.photo != null -> this.bikePhoto.setImageBitmap(Main.getScaledBitmap(this.photo!!, this.bikePhoto))
+            this.photo != null -> this.bike_photo.setImageBitmap(this.photo)
             this.bike.photo != null -> {
                 val bitmap = Main.byteArrayToBitmap(this.bike.photo!!)
-                this.bikePhoto.setImageBitmap(Main.getScaledBitmap(bitmap, this.bikePhoto))
+                this.bike_photo.setImageBitmap(Bitmap.createScaledBitmap(bitmap, this.bike_photo.layoutParams.width, this.bike_photo.layoutParams.height, false))
             }
-            else -> this.bikePhoto.setImageDrawable(null)
+            else -> this.bike_photo.setImageDrawable(null)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            println("hello")
             val bitmap = BitmapFactory.decodeFile(this.imagePath)
-            this.photo = Bitmap.createScaledBitmap(bitmap, this.bikePhoto.layoutParams.width, this.bikePhoto.layoutParams.height, false)
-            this.updatePhotoView()
+            this.photo = Bitmap.createScaledBitmap(bitmap, this.bike_photo.layoutParams.width, this.bike_photo.layoutParams.height, false)
+            this.bike_photo.setImageBitmap(this.photo)
         }
     }
 

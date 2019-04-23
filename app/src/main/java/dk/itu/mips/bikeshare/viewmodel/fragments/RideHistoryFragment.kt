@@ -2,6 +2,7 @@ package dk.itu.mips.bikeshare.viewmodel.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,14 +12,15 @@ import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Ride
 import dk.itu.mips.bikeshare.viewmodel.util.RideArrayAdapter
-import dk.itu.mips.bikeshare.viewmodel.dialogs.RideInfoDialog
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
 import io.realm.kotlin.where
+import kotlinx.android.synthetic.main.dialog_ride_info.view.*
+import kotlinx.android.synthetic.main.fragment_ride_history.*
 
 class RideHistoryFragment : Fragment() {
-    private lateinit var recyclerView: RecyclerView
+
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -30,7 +32,7 @@ class RideHistoryFragment : Fragment() {
             onListItemClicked(ride)
         }
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_rides)
+        this.recycler_view_rides
             .apply {
                 setHasFixedSize(true)
                 layoutManager =viewManager
@@ -48,7 +50,23 @@ class RideHistoryFragment : Fragment() {
     }
 
     private fun onListItemClicked(ride: Ride) {
-        val dialog = RideInfoDialog.newInstance(ride.id)
-        dialog.show(fragmentManager, "Ride info")
+        this.showRideInfoDialog(ride)
+    }
+
+    private fun showRideInfoDialog(ride: Ride) {
+        val view = layoutInflater.inflate(R.layout.dialog_ride_info, null)
+        val dialog = AlertDialog.Builder(this.activity!!)
+            .setView(view)
+            .setTitle("Ride information")
+            .setPositiveButton("close") { _, _ ->
+            }
+        dialog.create()
+        view.bike_name.text = ride.bikeName
+        view.ride_location_start.text = ride.startLocation
+        view.ride_location_end.text = ride.endLocation
+        view.ride_time_start.text = ride.startTime
+        view.ride_time_end.text = ride.endTime
+        view.ride_cost.text = String.format("%.2f", ride.cost).plus(" Dkk.")
+        dialog.show()
     }
 }

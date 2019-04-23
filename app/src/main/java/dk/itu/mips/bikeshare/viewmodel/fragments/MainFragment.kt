@@ -5,15 +5,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import dk.itu.mips.bikeshare.Main
 import dk.itu.mips.bikeshare.R
+import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
-
-    private lateinit var newRide: Button
-    private lateinit var wallet: Button
-    private lateinit var rideHistory: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,25 +20,18 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.initVariables(view)
         this.setListeners()
     }
 
-    private fun initVariables(view: View) {
-        this.newRide= view.findViewById(R.id.btn_new_ride)
-        this.rideHistory = view.findViewById(R.id.btn_history_ride)
-        this.wallet = view.findViewById(R.id.btn_wallet)
-    }
-
     private fun setListeners() {
-        this.newRide.setOnClickListener {
+        this.btn_new_ride.setOnClickListener {
           Main.replaceFragment(BikeSelectionFragment(), fragmentManager!!)
         }
-        this.rideHistory.setOnClickListener {
+        this.btn_history_ride.setOnClickListener {
             Main.replaceFragment(RideHistoryFragment(), fragmentManager!!)
         }
 
-        this.wallet.setOnClickListener {
+        this.btn_wallet.setOnClickListener {
             Main.replaceFragment(WalletFragment(), fragmentManager!!)
         }
     }

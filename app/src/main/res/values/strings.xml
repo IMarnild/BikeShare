@@ -34,7 +34,7 @@
     <string name="hint_bike_name">Bike name</string>
     <string name="hint_bike_location">Bike location</string>
     <string name="hint_end_ride">"Type your end-location here…"</string>
-    <string name="hint_bike_price">"Price pr. hour..."</string>
+    <string name="hint_bike_price">"Price pr. hour…"</string>
     <string name="description_end_ride">To end your ride, you have to type in your end-location in the field below and
         press the \'End ride\' button
     </string>

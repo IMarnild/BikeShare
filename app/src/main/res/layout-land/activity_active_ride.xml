@@ -4,8 +4,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:padding="10dp"
-              tools:context=".viewmodel.fragments.ActiveRideFragment">
+              android:paddingStart="20dp"
+              android:paddingEnd="20dp"
+              tools:context=".viewmodel.activities.ActiveRideActivity">
 
     <TextView
             android:text="@string/label_active_ride"

@@ -7,14 +7,14 @@ import android.widget.TextView
 import dk.itu.mips.bikeshare.R
 import dk.itu.mips.bikeshare.model.Ride
 
-class RideArrayAdapter(private val myDataset: List<Any>, val listener: (Ride) -> Unit) :
+class RideArrayAdapter(private val myDataset: List<Any>, private val listener: (Ride) -> Unit) :
     RecyclerView.Adapter<RideArrayAdapter.MyViewHolder>() {
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just a string in this case that is shown in a TextView.
-    class MyViewHolder(inflater: LayoutInflater, val parent: ViewGroup)
+    class MyViewHolder(inflater: LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.adapter_holder_ride, parent, false)) {
 
         var bike: TextView = itemView.findViewById(R.id.bike_name)

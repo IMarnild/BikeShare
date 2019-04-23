@@ -7,28 +7,18 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import dk.itu.mips.bikeshare.*
 import dk.itu.mips.bikeshare.model.Bike
 import dk.itu.mips.bikeshare.model.BikeRealm
 import dk.itu.mips.bikeshare.viewmodel.activities.ActiveRideActivity
 import dk.itu.mips.bikeshare.viewmodel.activities.EditBikeActivity
+import kotlinx.android.synthetic.main.fragment_bike_information.*
 
 class BikeInformationFragment : Fragment() {
+
     private val bikeRealm: BikeRealm = BikeRealm()
     private var id: Long = -1L
     private lateinit var bike: Bike
-
-    private lateinit var bikeId: TextView
-    private lateinit var bikeName: TextView
-    private lateinit var bikeLocation: TextView
-    private lateinit var bikeAvailable: TextView
-    private lateinit var bikePrice: TextView
-    private lateinit var bikePhoto: ImageView
-    private lateinit var startRideButton: Button
-    private lateinit var editBikeButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +33,8 @@ class BikeInformationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.initVariables(view)
         this.updateInfo()
         this.setButtonListeners()
-        if (this.id != -1L && !this.bike.available) this.startRideButton.visibility = View.GONE
     }
 
     override fun onResume() {
@@ -54,48 +42,38 @@ class BikeInformationFragment : Fragment() {
         this.updateInfo()
     }
 
-    private fun initVariables(view: View) {
-        this.bikeId = view.findViewById(R.id.bike_id)
-        this.bikeName = view.findViewById(R.id.bike_name)
-        this.bikeLocation = view.findViewById(R.id.bike_location)
-        this.bikeAvailable = view.findViewById(R.id.bike_available)
-        this.bikePrice = view.findViewById(R.id.bike_price)
-        this.bikePhoto = view.findViewById(R.id.bike_photo)
-        this.startRideButton = view.findViewById(R.id.btn_start_ride)
-        this.editBikeButton = view.findViewById(R.id.btn_edit)
-    }
-
     private fun updateInfo() {
         if (this.id != -1L) {
             this.bike = bikeRealm.read(this.id)!!
-            this.bikeId.text = this.bike.id.toString()
-            this.bikeName.text = this.bike.name
-            this.bikeLocation.text = this.bike.location
-            this.bikeAvailable.text = this.bike.available.toString()
+            this.bike_id.text = this.bike.id.toString()
+            this.bike_name.text = this.bike.name
+            this.bike_location.text = this.bike.location
+            this.bike_available.text = this.bike.available.toString()
             val price = this.bike.pricePerHour.toString() + " DKK."
-            this.bikePrice.text = price
+            this.bike_price.text = price
             updatePhotoView()
+            if (this.id != -1L && !this.bike.available) this.btn_start_ride.visibility = View.GONE else this.btn_start_ride.visibility = View.VISIBLE
         }
     }
 
     private fun updatePhotoView() {
        if (this.bike.photo != null) {
             val bitmap = Main.byteArrayToBitmap(this.bike.photo!!)
-            this.bikePhoto.setImageBitmap(Bitmap.createScaledBitmap(bitmap, this.bikePhoto.layoutParams.width, this.bikePhoto.layoutParams.height, false))
+            this.bike_photo.setImageBitmap(Bitmap.createScaledBitmap(bitmap, this.bike_photo.layoutParams.width, this.bike_photo.layoutParams.height, false))
        } else {
-            this.bikePhoto.setImageDrawable(null)
+            this.bike_photo.setImageDrawable(null)
        }
     }
 
     private fun setButtonListeners() {
-        this.startRideButton.setOnClickListener {
+        this.btn_start_ride.setOnClickListener {
             val intent = Intent(this.context, ActiveRideActivity::class.java)
             intent.putExtra(ARG_ACTIVE_BIKE_ID, this.bike.id)
             intent.putExtra(ARG_RIDE_START, Main.getDate())
             this.startActivity(intent)
         }
 
-        this.editBikeButton.setOnClickListener {
+        this.btn_edit.setOnClickListener {
             val intent = Intent(this.context, EditBikeActivity::class.java)
             intent.putExtra(ARG_BIKEID, this.bike.id)
             this.startActivity(intent)
